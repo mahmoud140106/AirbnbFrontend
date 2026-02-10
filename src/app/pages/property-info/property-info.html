@@ -1,37 +1,21 @@
-<app-propertImage-galary
-  [propertyId]="propertyId"
-  (wishlistToggle)="onWishlistClick($event)"
-  [isFavourite]="property?.isFavourite"
-></app-propertImage-galary>
+<app-propertImage-galary [propertyId]="propertyId" (wishlistToggle)="onWishlistClick($event)"
+  [isFavourite]="property?.isFavourite"></app-propertImage-galary>
 
 <div class="container-lg d-flex flex-column">
-  <div
-    class="property-details-box mt-2 d-flex justify-content-center justify-content-md-between flex-wrap"
-  >
+  <div class="property-details-box mt-2 d-flex justify-content-center justify-content-md-between flex-wrap">
     <div class="d-flex flex-column align-items-center">
       <div class="col-md-12 d-flex">
         <!-- property info, description, amenities, etc. -->
-        <app-amenities-section
-          [propertyId]="propertyId"
-          [property]="selectedProperty"
-        ></app-amenities-section>
+        <app-amenities-section [propertyId]="propertyId" [property]="selectedProperty"></app-amenities-section>
       </div>
       <!-- <app-reverse-section ></app-reverse-section> -->
       <div class="col-md-12 d-flex justify-content-center px-0">
-        <app-BookingCalendar
-          [propertyId]="propertyId"
-          [checkIn]="selectedDates.start"
-          [checkOut]="selectedDates.end"
-          [dateMap]="dateMap"
-          (datedChange)="onDateChange($event)"
-        >
+        <app-BookingCalendar [propertyId]="propertyId" [checkIn]="selectedDates.start" [checkOut]="selectedDates.end"
+          [dateMap]="dateMap" (datedChange)="onDateChange($event)">
         </app-BookingCalendar>
       </div>
     </div>
-    <div
-      class="bookinCalender position-relative d-flex d-md-block"
-      style="position: relative !important;"
-    >
+    <div class="bookinCalender position-relative d-flex d-md-block" style="position: relative !important;">
       <!-- <div class="row"> -->
       <!-- <div class="col-md-8">
 
@@ -40,21 +24,10 @@
         </app-BookingCalendar>
 
       </div> -->
-      <div
-        class="col-md-12 sticky-box mx-auto"
-        style="position: sticky; top: 90px;"
-      >
-        <app-reverse-section
-          [dateMap]="dateMap"
-          [propertyId]="propertyId"
-          [hostID]="hostID"
-          [checkIn]="selectedDates.start"
-          [checkOut]="selectedDates.end"
-          [guests]="guestCount"
-          [isPreview]="isPreview"
-          (guestChange)="onGuestChange($event)"
-          (dateChange)="onDateChange($event)"
-        >
+      <div class="col-md-12 sticky-box mx-auto" style="position: sticky; top: 90px;">
+        <app-reverse-section [dateMap]="dateMap" [propertyId]="propertyId" [hostID]="hostID"
+          [checkIn]="selectedDates.start" [checkOut]="selectedDates.end" [guests]="guestCount" [isPreview]="isPreview"
+          (guestChange)="onGuestChange($event)" (dateChange)="onDateChange($event)">
         </app-reverse-section>
       </div>
       <!-- <div class="reviewSection">
@@ -87,22 +60,13 @@
 
     <!-- Navigation Tabs -->
     <div class="tabs">
-      <button
-        [class.active]="activeTab === 'gallery'"
-        (click)="changeTab('gallery')"
-      >
+      <button [class.active]="activeTab === 'gallery'" (click)="changeTab('gallery')">
         Gallery
       </button>
-      <button
-        [class.active]="activeTab === 'reviews'"
-        (click)="changeTab('reviews')"
-      >
+      <button [class.active]="activeTab === 'reviews'" (click)="changeTab('reviews')">
         Reviews
       </button>
-      <button
-        [class.active]="activeTab === 'amenities'"
-        (click)="changeTab('amenities')"
-      >
+      <button [class.active]="activeTab === 'amenities'" (click)="changeTab('amenities')">
         Amenities
       </button>
     </div>
@@ -112,15 +76,8 @@
 
   <app-guest-reviews [propertyId]="propertyId"></app-guest-reviews>
 
-  <app-wish-list-modal
-    *ngIf="showWishlistModal"
-    [propertyId]="selectedPropertyId"
-    (close)="onClose()"
-    (finish)="onFinish($event)"
-    [show]="showWishlistModal"
-    [userId]="authService.userId ?? undefined"
-    class="col-12"
-  >
+  <app-wish-list-modal *ngIf="showWishlistModal" [propertyId]="selectedPropertyId" (close)="onClose()"
+    (finish)="onFinish($event)" [show]="showWishlistModal" [userId]="authService.userId ?? undefined" class="col-12">
   </app-wish-list-modal>
 
   <app-chat-bot></app-chat-bot>

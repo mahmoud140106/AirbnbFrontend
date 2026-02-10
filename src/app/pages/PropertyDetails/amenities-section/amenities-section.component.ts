@@ -18,13 +18,13 @@ interface Amenity {
 @Component({
   selector: 'app-amenities-section',
   standalone: true,
-  imports: [CommonModule ,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './amenities-section.component.html',
   styleUrls: ['./amenities-section.component.css']
 })
 export class AmenitiesSectionComponent implements OnInit, OnChanges {
   @Input() propertyId!: number;
-  @Input() property?:Property
+  @Input() property?: Property
   amenities: Amenity[] = [];
   isLoading = true;
   showAllAmenities = false;
@@ -33,7 +33,7 @@ export class AmenitiesSectionComponent implements OnInit, OnChanges {
   constructor(private propertyAmenityService: PropertyAmenityService) { }
 
   ngOnInit(): void {
-    console.log("property form amenties section",this.property)
+    console.log("property form amenties section", this.property)
     if (!this.propertyId) {
       console.error('Property ID is required for AmenitiesSectionComponent');
       this.isLoading = false;
@@ -41,12 +41,12 @@ export class AmenitiesSectionComponent implements OnInit, OnChanges {
     }
     this.loadAmenities();
 
-   
-    
+
+
   } //end oninit
-ngOnChanges(){
-  console.log("property form amentites section",this.property)
-}
+  ngOnChanges() {
+    console.log("property form amentites section", this.property)
+  }
   private loadAmenities(): void {
     this.propertyAmenityService.getAllAmenitiesByPropertyId(this.propertyId).subscribe({
       next: (response: any) => {
@@ -72,7 +72,7 @@ ngOnChanges(){
     if (!url) return ''; // fallback icon
     return url.startsWith('http') ? url : `https://localhost:7025${url}`;
   }
- get displayedAmenities(): Amenity[] {
+  get displayedAmenities(): Amenity[] {
     return this.showAllAmenities
       ? this.amenities
       : this.amenities.slice(0, this.INITIAL_DISPLAY_COUNT);
@@ -94,7 +94,7 @@ ngOnChanges(){
 
   toggleShowAll(): void {
     this.showAllAmenities = !this.showAllAmenities;
-    
+
     // Smooth scroll to top of amenities section when collapsing
     if (!this.showAllAmenities) {
       setTimeout(() => {
@@ -108,7 +108,7 @@ ngOnChanges(){
       }, 100);
     }
   }
-    onImageError(event: any): void {
+  onImageError(event: any): void {
     event.target.src = 'assets/images/default-amenity.svg';
   }
 

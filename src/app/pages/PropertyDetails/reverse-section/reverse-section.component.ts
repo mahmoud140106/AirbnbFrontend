@@ -309,17 +309,17 @@ export class ReverseSectionComponent implements OnInit, OnChanges {
     //   return true
     // }
     if (date.isBefore(dayjs(), 'day')) return true;
-    
-        if (this.dateMap) {
-          const dateKey = date.format('YYYY-MM-DD');
-          const availabilityData = this.dateMap.get(dateKey);
-    
-          if (availabilityData && availabilityData.isAvailable === false) {
-            return true;
-          }
-        }
-    
-        return false;
+
+    if (this.dateMap) {
+      const dateKey = date.format('YYYY-MM-DD');
+      const availabilityData = this.dateMap.get(dateKey);
+
+      if (availabilityData && availabilityData.isAvailable === false) {
+        return true;
+      }
+    }
+
+    return false;
 
     // if (date.isBefore(dayjs())) return true;
     // if (this.dateMap) {
@@ -687,7 +687,7 @@ export class ReverseSectionComponent implements OnInit, OnChanges {
 
 
   calculateTotalPrice(): void {
-    console.log("start calculatePrice",!this.selected?.startDate ,!this.selected?.endDate ,!this.dateMap)
+    console.log("start calculatePrice", !this.selected?.startDate, !this.selected?.endDate, !this.dateMap)
     if (!this.selected?.startDate || !this.selected?.endDate || !this.dateMap) return;
 
     const start = dayjs(this.selected.startDate);

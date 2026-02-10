@@ -4,15 +4,10 @@
     <!-- Dynamic overall rating -->
     <div class="overall-rating-display">
       <div class="overall-rating-stars">
-        <app-star-component
-          [maxStars]="1"
-          [value]="getOverallRating()"
-          [readonly]="true"
-          [fontSize]="'1.5rem'"
-          [starColor]="'black'"
-        ></app-star-component>
+        <app-star-component [maxStars]="1" [value]="overallRatingValue" [readonly]="true" [fontSize]="'1.5rem'"
+          [starColor]="'black'"></app-star-component>
         <h2 class="overall-rating-number mx-2">
-          {{ getOverallRating() | number : "1.1-1" }}
+          {{ overallRatingValue | number : "1.1-1" }}
         </h2>
       </div>
       <div class="reviews-count">
@@ -20,7 +15,7 @@
           <span class="reviews-count-number">{{ reviews.length }}</span>
           <span class="reviews-count-text mx-2">{{
             reviews.length === 1 ? "review" : "reviews"
-          }}</span>
+            }}</span>
         </h2>
       </div>
     </div>
@@ -46,12 +41,8 @@
 
    -->
 
-  <app-reviews-modal
-    *ngIf="showReviewsModal"
-    [reviews]="reviews"
-    [propertyId]="propertyId"
-    (closeModal)="closeReviewsModal()"
-  ></app-reviews-modal>
+  <app-reviews-modal *ngIf="showReviewsModal" [reviews]="reviews" [propertyId]="propertyId"
+    (closeModal)="closeReviewsModal()"></app-reviews-modal>
 
   <!-- Summary Row -->
   <div class="summary-row" *ngIf="reviews.length > 0">
@@ -59,45 +50,28 @@
     <div class="rating-breakdown">
       <h6 class="mb-3">Overall rating</h6>
       <div class="rating-bars">
-        <div class="rating-bar-item" *ngFor="let rating of [5, 4, 3, 2, 1]">
+        <div class="rating-bar-item" *ngFor="let rating of ratingLevels">
           <span class="rating-number">{{ rating }}</span>
           <div class="progress-bar-container">
-            <div
-              class="progress-bar"
-              [style.width.%]="getRatingPercentage(rating)"
-            ></div>
+            <div class="progress-bar" [style.width.%]="ratingPercentages[rating]"></div>
           </div>
-          <span class="rating-count"
-            >({{ ratingDistribution[rating] || 0 }})</span
-          >
+          <span class="rating-count">({{ ratingDistributionData[rating] || 0 }})</span>
         </div>
       </div>
     </div>
 
     <!-- Category Ratings -->
     <div class="category-ratings">
-      <div
-        class="category-item"
-        *ngFor="
-          let category of [
-            'cleanliness',
-            'accuracy',
-            'checkIn',
-            'communication',
-            'location',
-            'value'
-          ]
-        "
-      >
+      <div class="category-item" *ngFor="let category of reviewCategories">
         <div class="category-icon-container">
           <i [class]="getCategoryIcon(category)" class="category-icon"></i>
         </div>
         <div class="category-info">
           <span class="category-label">{{
             category === "checkIn" ? "Check-in" : (category | titlecase)
-          }}</span>
+            }}</span>
           <span class="category-rating">
-            {{ categoryAverages[category] || "N/A" }}
+            {{ categoryAveragesData[category] || "N/A" }}
           </span>
         </div>
       </div>
@@ -115,41 +89,25 @@
 
   <!-- Reviews Grid (Show only first 6) -->
   <div class="reviews-grid" *ngIf="reviews.length > 0">
-    <div
-      *ngFor="let review of reviews | slice : 0 : 6; trackBy: trackByReviewId"
-      class="review-card"
-    >
+    <div *ngFor="let review of visibleReviews; trackBy: trackByReviewId" class="review-card">
       <!-- Profile Section -->
       <div class="review-header">
-        <div
-          class="profile-section"
-          role="button"
-          tabindex="0"
-          (click)="navigateToReviewerProfile(review.user.userId)"
-          style="cursor: pointer"
-        >
+        <div class="profile-section" role="button" tabindex="0" (click)="navigateToReviewerProfile(review.user.userId)"
+          style="cursor: pointer">
           <div class="profile-avatar">
             @if(review.user.profilePictureURL && !imageErrors.has(review.id)){
-            <img
-              loading="lazy"
-              [src]="getImageUrl(review.user.profilePictureURL)"
-              class="rounded-circle"
-              width="48"
-              height="48"
-              (error)="onImageError($event, review)"
-            />
+            <img loading="lazy" [src]="getImageUrl(review.user.profilePictureURL)" class="rounded-circle" width="48"
+              height="48" (error)="onImageError($event, review)" />
             } @if(!review.user.profilePictureURL || imageErrors.has(review.id)){
-            <div
-              class="bg-dark rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-              style="width: 48px; height: 48px"
-            >
-              {{ getInitials(review.user.firstName, review.user.lastName) }}
+            <div class="bg-dark rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+              style="width: 48px; height: 48px">
+              {{ review.initials }}
             </div>
             }
           </div>
           <div class="profile-info">
             <h6 class="reviewer-name text-decoration-underline-hover">
-              {{ getFullName(review.user.firstName, review.user.lastName) }}
+              {{ review.fullName }}
             </h6>
             <p class="reviewer-location text-muted" *ngIf="review.user.country">
               {{ review.user.country }}
@@ -161,18 +119,9 @@
         <!-- Actions (Edit, View, Delete) - Only show for user's own reviews -->
         @if(currentUser && currentUser === review.user.userId){
         <div class="review-actions">
-          <i
-            (click)="navigateToEditReview(review)"
-            class="action-icon text-dark bi bi-pencil-fill"
-            title="Edit"
-            style="cursor: pointer"
-          ></i>
-          <button
-            type="button"
-            class="btn p-0 action-icon text-dark"
-            (click)="deleteHandler(review.id)"
-            title="Delete"
-          >
+          <i (click)="navigateToEditReview(review)" class="action-icon text-dark bi bi-pencil-fill" title="Edit"
+            style="cursor: pointer"></i>
+          <button type="button" class="btn p-0 action-icon text-dark" (click)="deleteHandler(review.id)" title="Delete">
             <i class="bi bi-x-circle"></i>
           </button>
         </div>
@@ -182,27 +131,18 @@
       <!-- Rating and Date -->
       <div class="review-meta">
         <div class="review-stars">
-          <app-star-component
-            [fontSize]="'small'"
-            [starColor]="'black'"
-            [value]="review.rating"
-            [readonly]="true"
-          >
+          <app-star-component [fontSize]="'small'" [starColor]="'black'" [value]="review.rating" [readonly]="true">
           </app-star-component>
         </div>
-        <span class="review-date">{{ getDaysAgo(review.createdAt) }}</span>
-        <span class="review-type">{{ getStayDuration(review) }}</span>
+        <span class="review-date">{{ review.daysAgoLabel }}</span>
+        <span class="review-type">{{ review.stayDurationLabel }}</span>
       </div>
 
       <!-- Review Content -->
       <div class="review-content">
         <p class="review-text">{{ review.comment }}</p>
-        <button
-          class="show-more-btn"
-          type="button"
-          (click)="openReviewsModal()"
-          *ngIf="review.comment && review.comment.length > 150"
-        >
+        <button class="show-more-btn" type="button" (click)="openReviewsModal()"
+          *ngIf="review.comment && review.comment.length > 150">
           Show more
         </button>
       </div>
@@ -211,10 +151,7 @@
 
   <!-- Bottom Actions -->
   <div class="bottom-actions" *ngIf="reviews.length > 6">
-    <button
-      class="btn btn-outline-dark btn-lg show-all-btn"
-      (click)="openReviewsModal()"
-    >
+    <button class="btn btn-outline-dark btn-lg show-all-btn" (click)="openReviewsModal()">
       Show all {{ reviews.length }} reviews
     </button>
   </div>
@@ -228,16 +165,8 @@
   }
 
   <!-- Learn More Section -->
-  <div
-    class="learn-container d-flex justify-content-center"
-    *ngIf="reviews.length > 0"
-  >
-    <a
-      href="#"
-      class="learn-link"
-      (click)="toggleTooltip($event)"
-      [attr.aria-expanded]="showTooltip"
-    >
+  <div class="learn-container d-flex justify-content-center" *ngIf="reviews.length > 0">
+    <a href="#" class="learn-link" (click)="toggleTooltip($event)" [attr.aria-expanded]="showTooltip">
       Learn how reviews work
     </a>
     <!-- Tooltip -->
@@ -282,22 +211,8 @@
       <!-- Body -->
       <ellipse cx="60" cy="75" rx="18" ry="25" fill="url(#shirtGradient)" />
       <!-- Arms -->
-      <ellipse
-        cx="42"
-        cy="68"
-        rx="8"
-        ry="15"
-        fill="url(#shirtGradient)"
-        transform="rotate(-20 42 68)"
-      />
-      <ellipse
-        cx="78"
-        cy="68"
-        rx="8"
-        ry="15"
-        fill="url(#shirtGradient)"
-        transform="rotate(45 78 68)"
-      />
+      <ellipse cx="42" cy="68" rx="8" ry="15" fill="url(#shirtGradient)" transform="rotate(-20 42 68)" />
+      <ellipse cx="78" cy="68" rx="8" ry="15" fill="url(#shirtGradient)" transform="rotate(45 78 68)" />
       <!-- Hands -->
       <circle cx="38" cy="60" r="6" fill="url(#skinGradient)" />
       <circle cx="85" cy="75" r="6" fill="url(#skinGradient)" />
@@ -310,38 +225,17 @@
       <!-- Head -->
       <circle cx="60" cy="40" r="20" fill="url(#skinGradient)" />
       <!-- Hair -->
-      <path
-        d="M 45 25 Q 60 15 75 25 Q 80 30 75 35 Q 70 20 60 20 Q 50 20 45 35 Q 40 30 45 25"
-        fill="#8B4513"
-      />
+      <path d="M 45 25 Q 60 15 75 25 Q 80 30 75 35 Q 70 20 60 20 Q 50 20 45 35 Q 40 30 45 25" fill="#8B4513" />
       <!-- Eyes -->
       <circle cx="54" cy="38" r="3" fill="white" />
       <circle cx="66" cy="38" r="3" fill="white" />
       <circle cx="54" cy="38" r="2" fill="black" />
       <circle cx="66" cy="38" r="2" fill="black" />
       <!-- Smile -->
-      <path
-        d="M 52 45 Q 60 50 68 45"
-        stroke="#E74C2C"
-        stroke-width="2"
-        fill="none"
-        stroke-linecap="round"
-      />
+      <path d="M 52 45 Q 60 50 68 45" stroke="#E74C2C" stroke-width="2" fill="none" stroke-linecap="round" />
       <!-- Waving motion lines -->
-      <path
-        d="M 30 55 Q 35 50 40 55"
-        stroke="#FF385C"
-        stroke-width="2"
-        fill="none"
-        opacity="0.6"
-      />
-      <path
-        d="M 28 58 Q 33 53 38 58"
-        stroke="#FF385C"
-        stroke-width="1.5"
-        fill="none"
-        opacity="0.4"
-      />
+      <path d="M 30 55 Q 35 50 40 55" stroke="#FF385C" stroke-width="2" fill="none" opacity="0.6" />
+      <path d="M 28 58 Q 33 53 38 58" stroke="#FF385C" stroke-width="1.5" fill="none" opacity="0.4" />
     </svg>
   </div>
 
@@ -368,19 +262,10 @@
 
       <div class="row">
         <div class="col-xl-4 col-lg-5 col-md-6 col-12 mb-4 mb-lg-0">
-          <app-profile-card
-            [firstName]="hostInfo.firstName"
-            [lastName]="hostInfo.lastName"
-            [country]="hostInfo.country"
-            [profileImageUrl]="hostInfo.profilePictureURL"
-            [userId]="hostInfo.userId"
-            [userType]="'Host'"
-            [stats]="hostStats"
-            [showHeartBadge]="isHostSuperhost()"
-            [imageBaseUrl]="imageBaseUrl"
-            [imageErrors]="imageError"
-            [onImageErrorCallback]="onHostImageError"
-          ></app-profile-card>
+          <app-profile-card [firstName]="hostInfo.firstName" [lastName]="hostInfo.lastName" [country]="hostInfo.country"
+            [profileImageUrl]="hostInfo.profilePictureURL" [userId]="hostInfo.userId" [userType]="'Host'"
+            [stats]="hostStats" [showHeartBadge]="isHostSuperhost()" [imageBaseUrl]="imageBaseUrl"
+            [imageErrors]="imageErrors" [onImageErrorCallback]="onHostImageError"></app-profile-card>
         </div>
 
         <div class="col-xl-1 d-none d-xl-block"></div>
@@ -395,29 +280,22 @@
               <div class="text-muted fs-5">Responds within an hour</div>
             </div>
 
-            <button
-              class="btn mb-3 fw-semibold px-4 py-2"
-              style="
+            <button class="btn mb-3 fw-semibold px-4 py-2" style="
                 border-radius: 8px;
                 font-size: 1rem;
                 border: 1px solid #ebebeb;
                 background-color: #ebebeb;
                 color: #333;
                 transition: all 0.2s ease;
-              "
-              onmouseover="this.style.backgroundColor='#d4d4d4'; this.style.borderColor='#d4d4d4'"
+              " onmouseover="this.style.backgroundColor='#d4d4d4'; this.style.borderColor='#d4d4d4'"
               onmouseout="this.style.backgroundColor='#ebebeb'; this.style.borderColor='#ebebeb'"
-              onmousedown="this.style.transform='scale(0.95)'"
-              onmouseup="this.style.transform='scale(1)'"
-              [routerLink] = "['/contact-host',propertyId]"
-            >
+              onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'"
+              [routerLink]="['/contact-host',propertyId]">
               Message host
             </button>
 
             <div class="d-flex align-items-start text-muted">
-              <i
-                class="fas fa-shield-alt text-danger me-2 mt-1 flex-shrink-0"
-              ></i>
+              <i class="fas fa-shield-alt text-danger me-2 mt-1 flex-shrink-0"></i>
               <span class="fs-6">
                 To help protect your payment, always use Airbnb to send money
                 and communicate with hosts.

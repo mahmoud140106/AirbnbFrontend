@@ -2,9 +2,7 @@
   <div class="rare-find-badge mt-2 mb-4">
     <div class="rare-find-content d-flex align-items-center">
       <i class="bi bi-gem rare-find-icon me-2"></i>
-      <span class="rare-find-title"
-        >Rare find! This place is usually booked</span
-      >
+      <span class="rare-find-title">Rare find! This place is usually booked</span>
     </div>
   </div>
 
@@ -13,18 +11,10 @@
       price:- <span class="price">{{ pricePerNight | currency }}</span>
       <span> for {{ nightsCount }} night</span>
     </div>
-    <div
-      class="total-price"
-      *ngIf="totalPrice"
-      class="mt-2 text-success fs-5 fw-medium d-flex m-auto align-items-center"
-    >
+    <div class="total-price" *ngIf="totalPrice"
+      class="mt-2 text-success fs-5 fw-medium d-flex m-auto align-items-center">
       Total
-      <img
-        style="width: 20px; height: 25px"
-        src="assets/images/dollars.png"
-        alt="dolar image"
-        loading="lazy"
-      />
+      <img style="width: 20px; height: 25px" src="assets/images/dollars.png" alt="dolar image" loading="lazy" />
       : {{ totalPrice | currency }}
     </div>
 
@@ -40,25 +30,11 @@
       <div class="flex justify-content-end mb-2" (click)="onClear()">
         <button>clear</button>
       </div>
-      <input
-        #picker
-        [(ngModel)]="selected"
-        [isInvalidDate]="isInvalidDate"
-        class="custom-date-input text-center fs-6 mx-auto"
-        ngxDaterangepickerMd
-        [useMap]="false"
-        [linkedCalendars]="true"
-        [showClearButton]="false"
-        [alwaysShowCalendars]="true"
-        [ranges]="ranges"
-        [locale]="locale"
-        [autoApply]="true"
-        [showCancel]="false"
-        [showDropdowns]="false"
-        [locale]="locale"
-        (datesUpdated)="onDatesChanged($event)"
-        (startDateChanged)="onStartDateChange($event)"
-      />
+      <input #picker [(ngModel)]="selected" [isInvalidDate]="isInvalidDate"
+        class="custom-date-input text-center fs-6 mx-auto" ngxDaterangepickerMd [useMap]="false"
+        [linkedCalendars]="true" [showClearButton]="false" [alwaysShowCalendars]="true" [ranges]="ranges"
+        [locale]="locale" [autoApply]="true" [showCancel]="false" [showDropdowns]="false" [locale]="locale"
+        (datesUpdated)="onDatesChanged($event)" (startDateChanged)="onStartDateChange($event)" />
     </div>
 
     <!-- <input type="date"     > -->
@@ -77,17 +53,11 @@
             <div class="guest-description">Age 13+</div>
           </div>
           <div class="guest-counter">
-            <button
-              [disabled]="guests.adults <= 1"
-              (click)="updateGuests('adults', -1)"
-            >
+            <button [disabled]="guests.adults <= 1" (click)="updateGuests('adults', -1)">
               −
             </button>
             <span>{{ guests.adults }}</span>
-            <button
-              [disabled]="guests.adults + guests.children >= maxGuests"
-              (click)="updateGuests('adults', 1)"
-            >
+            <button [disabled]="guests.adults + guests.children >= maxGuests" (click)="updateGuests('adults', 1)">
               +
             </button>
           </div>
@@ -99,17 +69,11 @@
             <div class="guest-description">Ages 2-12</div>
           </div>
           <div class="guest-counter">
-            <button
-              [disabled]="guests.children <= 0"
-              (click)="updateGuests('children', -1)"
-            >
+            <button [disabled]="guests.children <= 0" (click)="updateGuests('children', -1)">
               −
             </button>
             <span>{{ guests.children }}</span>
-            <button
-              [disabled]="guests.adults + guests.children >= maxGuests"
-              (click)="updateGuests('children', 1)"
-            >
+            <button [disabled]="guests.adults + guests.children >= maxGuests" (click)="updateGuests('children', 1)">
               +
             </button>
           </div>
@@ -130,8 +94,7 @@
         <div class="guest-limit-note" *ngIf="maxGuests">
           This place has a maximum of
           <span style="color: rgb(24, 162, 242); font-size: large">
-            {{ maxGuests }}</span
-          >
+            {{ maxGuests }}</span>
           guests If you're bringing more than 2 pets, please let your host know.
         </div>
         <div class="text-red-500 mt-2" *ngIf="errorMessage">
@@ -139,12 +102,8 @@
         </div>
       </div>
     </div>
-    <button
-      type="button"
-      class="check-btn"
-      (click)="onShowConfirmModal()"
-      [disabled]="!selected.startDate || !selected.endDate"
-    >
+    <button type="button" class="check-btn" (click)="onShowConfirmModal()"
+      [disabled]="!selected.startDate || !selected.endDate">
       Reserve
     </button>
     <!-- If available -->
@@ -163,21 +122,10 @@
   <i class="fa-regular fa-flag"></i>
   <a class="report-link">Report this listing</a>
 </div>
-<app-violation-modal
-  [show]="showViolationModal"
-  [propertyId]="propertyId"
-  (close)="closeViolationModal()"
-></app-violation-modal>
+<app-violation-modal [show]="showViolationModal" [propertyId]="propertyId"
+  (close)="closeViolationModal()"></app-violation-modal>
 
-<app-reserve-confirm-modal
-  *ngIf="showConfirmModal"
-  (close)="onCloseConfirmModal()"
-  [checkIn]="selected.startDate"
-  [checkOut]="selected.endDate"
-  [guestsCount]="guestCount"
-  [pricePerNight]="property.pricePerNight"
-  [totalPrice]="totalPrice"
-  [nightsCount]="nightsCount"
-  (confirm)="onReserveConfirmClick()"
->
+<app-reserve-confirm-modal *ngIf="showConfirmModal" (close)="onCloseConfirmModal()" [checkIn]="selected.startDate"
+  [checkOut]="selected.endDate" [guestsCount]="guestCount" [pricePerNight]="property.pricePerNight"
+  [totalPrice]="totalPrice" [nightsCount]="nightsCount" (confirm)="onReserveConfirmClick()">
 </app-reserve-confirm-modal>

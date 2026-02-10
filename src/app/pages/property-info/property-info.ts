@@ -109,7 +109,7 @@ export class PropertyInfo implements OnInit {
   }
 
   getCalendarAvailability() {
-      this.calendarService.getAvailability(
+    this.calendarService.getAvailability(
       this.propertyId,
       this.firstCalendarDate.toString(),
       this.lastCalendarDate.toString()

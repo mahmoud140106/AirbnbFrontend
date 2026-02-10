@@ -3,19 +3,9 @@
 
   <div class="guest-favorite-box d-flex align-items-center gap-1 my-2">
     <div class="guest-favorite-content d-flex align-items-center gap-1">
-      <img
-        class="reviewImage"
-        src="assets/images/gold.png"
-        alt="Guest Favorite icon"
-        loading="lazy"
-      />
+      <img class="reviewImage" src="assets/images/gold.png" alt="Guest Favorite icon" loading="lazy" />
       <span class="Guestfavorite">Guest favorite</span>
-      <img
-        class="reviewImage"
-        src="assets/images/goldright.png"
-        alt="Guest Favorite icon"
-        loading="lazy"
-      />
+      <img class="reviewImage" src="assets/images/goldright.png" alt="Guest Favorite icon" loading="lazy" />
 
       <div class="subtitle text-black">
         One of the most loved homes on <br />
@@ -41,53 +31,32 @@
 
   <div class="amenities-container mb-4">
     <div class="amenities-column mt-3">
-      <div
-        *ngFor="let amenity of firstColumnAmenities; trackBy: trackByAmenityId"
-        class="amenity-item"
-      >
-        <img
-          [src]="amenity.iconUrl"
-          [alt]="amenity.name"
-          class="amenity-icon"
-          (error)="onImageError($event)"
-          loading="lazy"
-        />
+      <div *ngFor="let amenity of firstColumnAmenities; trackBy: trackByAmenityId" class="amenity-item">
+        <img [src]="amenity.iconUrl" [alt]="amenity.name" class="amenity-icon" (error)="onImageError($event)"
+          loading="lazy" />
         <span class="amenity-name">{{ amenity.name }}</span>
       </div>
     </div>
 
     <div class="amenities-column mt-3">
-      <div
-        *ngFor="let amenity of secondColumnAmenities; trackBy: trackByAmenityId"
-        class="amenity-item"
-      >
-        <img
-          [src]="amenity.iconUrl"
-          [alt]="amenity.name"
-          class="amenity-icon"
-          (error)="onImageError($event)"
-          loading="lazy"
-        />
+      <div *ngFor="let amenity of secondColumnAmenities; trackBy: trackByAmenityId" class="amenity-item">
+        <img [src]="amenity.iconUrl" [alt]="amenity.name" class="amenity-icon" (error)="onImageError($event)"
+          loading="lazy" />
         <span class="amenity-name">{{ amenity.name }}</span>
       </div>
     </div>
   </div>
 
-  <button
-    *ngIf="shouldShowToggle && amenities.length > 5"
-    class="show-all-btn mb-3"
-    (click)="toggleShowAll()"
-    [attr.aria-expanded]="showAllAmenities"
-    [attr.aria-label]="
+  <button *ngIf="shouldShowToggle && amenities.length > 5" class="show-all-btn mb-3" (click)="toggleShowAll()"
+    [attr.aria-expanded]="showAllAmenities" [attr.aria-label]="
       showAllAmenities
         ? 'Show fewer amenities'
         : 'Show all ' + amenities.length + ' amenities'
-    "
-  >
+    ">
     {{
-      showAllAmenities
-        ? "Show less"
-        : "Show all " + amenities.length + " amenities"
+    showAllAmenities
+    ? "Show less"
+    : "Show all " + amenities.length + " amenities"
     }}
   </button>
 

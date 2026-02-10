@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-star-component',
+  standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './star-component.html',
   styleUrl: './star-component.css',
@@ -18,8 +19,9 @@ import { CommonModule } from '@angular/common';
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StarComponent implements ControlValueAccessor {
+export class StarComponent implements ControlValueAccessor, OnInit, OnChanges {
   @Input() maxStars: number = 5;
   @Input() starColor: string = 'rgb(232, 65, 89)';
   @Input() inactiveColor: string = '#ccc';
@@ -33,14 +35,26 @@ export class StarComponent implements ControlValueAccessor {
   @Input() value: number = 0; // Add @Input() decorator to existing value
   hoveredRating: number | null = null;
 
-  get stars(): number[] {
-    return Array.from({ length: this.maxStars }, (_, i) => i + 1);
+  stars: number[] = [];
+
+  ngOnInit(): void {
+    this.updateStars();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['maxStars']) {
+      this.updateStars();
+    }
+  }
+
+  private updateStars(): void {
+    this.stars = Array.from({ length: this.maxStars }, (_, i) => i + 1);
   }
 
   // ControlValueAccessor implementation
 
-  private onChange = (value: number) => {};
-  private onTouched = () => {};
+  private onChange = (value: number) => { };
+  private onTouched = () => { };
 
   writeValue(value: number): void {
     this.value = value || 0;

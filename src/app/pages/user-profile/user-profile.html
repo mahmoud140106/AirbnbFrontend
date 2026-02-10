@@ -20,79 +20,50 @@
     <div class="row mb-4"></div>
 
     <!-- Host -->
-    <div
-      class="d-flex flex-column flex-lg-row gap-4 align-items-start mb-5"
-      style="max-width: 1000px; margin: 0"
-      *ngIf="canShowProfile"
-    >
+    <div class="d-flex flex-column flex-lg-row gap-4 align-items-start mb-5" style="max-width: 1000px; margin: 0"
+      *ngIf="canShowProfile">
       <!-- Use shared profile card component  -->
-      <app-profile-card
-        *ngIf="canShowProfile"
-        [firstName]="userProfile.user?.firstName || userProfile.firstName"
-        [lastName]="userProfile.user?.lastName || userProfile.lastName"
-        [country]="userProfile.country"
+      <app-profile-card *ngIf="canShowProfile" [firstName]="userProfile.user?.firstName || userProfile.firstName"
+        [lastName]="userProfile.user?.lastName || userProfile.lastName" [country]="userProfile.country"
         [profileImageUrl]="
           userProfile.user?.profilePictureURL || userProfile.profilePictureURL
-        "
-        [userId]="userProfile.id"
-        [userType]="isHost ? 'Host' : 'Guest'"
-        [stats]="isHost ? hostStats : guestStats"
-        [showHeartBadge]="isHost && hostStats && hostStats.averageRating >= 4.8"
-        [imageBaseUrl]="imageBaseUrl"
-        [imageErrors]="imageErrors"
-        [clickable]="false"
-        [onImageErrorCallback]="onImageError.bind(this)"
-      ></app-profile-card>
+        " [userId]="userProfile.id" [userType]="isHost ? 'Host' : 'Guest'" [stats]="isHost ? hostStats : guestStats"
+        [showHeartBadge]="isHost && hostStats && hostStats.averageRating >= 4.8" [imageBaseUrl]="imageBaseUrl"
+        [imageErrors]="imageErrors" [clickable]="false"
+        [onImageErrorCallback]="onImageError.bind(this)"></app-profile-card>
 
       <div class="flex-fill ps-lg-3">
         <h3 class="fs-4 fw-semibold text-dark mb-4">
           About {{ userProfile.firstName || "Host" }}
         </h3>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="userProfile.bio"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="userProfile.bio">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-briefcase text-muted"></i>
           </div>
           <div class="text-dark">My work: {{ userProfile.bio }}</div>
         </div>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="getBirthDecade()"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="getBirthDecade()">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-birthday-cake text-muted"></i>
           </div>
           <div class="text-dark">{{ getBirthDecade() }}</div>
         </div>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="userProfile.country"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="userProfile.country">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-map-marker-alt text-muted"></i>
           </div>
           <div class="text-dark">Lives in {{ userProfile.country }}</div>
         </div>
 
         <div class="d-flex align-items-start mb-3 gap-3">
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-shield-alt text-muted"></i>
           </div>
           <div class="text-success fw-medium">Identity verified</div>
@@ -142,66 +113,44 @@
         </h3>
 
         <div class="d-flex align-items-center gap-2">
-          <button
-            class="btn btn-outline-secondary rounded-circle p-2"
-            style="width: 40px; height: 40px"
-            (click)="scrollReviews('left')"
-          >
+          <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+            (click)="scrollReviews('left')">
             <i class="fas fa-chevron-left"></i>
           </button>
-          <button
-            class="btn btn-outline-secondary rounded-circle p-2"
-            style="width: 40px; height: 40px"
-            (click)="scrollReviews('right')"
-          >
+          <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+            (click)="scrollReviews('right')">
             <i class="fas fa-chevron-right"></i>
           </button>
         </div>
       </div>
 
       <div class="overflow-hidden">
-        <div
-          #reviewsContainer
-          class="d-flex gap-3 pb-2 transition-transform"
-          style="scroll-behavior: smooth; transform: translateX(0px)"
-        >
-          <div
-            class="flex-shrink-0"
-            *ngFor="let review of hostReviews.slice(0, 10)"
-            style="width: 220px"
-          >
+        <div #reviewsContainer class="d-flex gap-3 pb-2 transition-transform"
+          style="scroll-behavior: smooth; transform: translateX(0px)">
+          <div class="flex-shrink-0" *ngFor="let review of hostReviews.slice(0, 10)" style="width: 220px">
             <div class="card border-0 h-100" style="min-height: 240px">
               <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                  <img
-                    loading="lazy"
-                    *ngIf="
+                  <img loading="lazy" *ngIf="
                       review.user?.profilePictureURL &&
                       !imageErrors.has(review.user.userId)
-                    "
-                    [src]="getImageUrl(review.user.profilePictureURL)"
-                    [alt]="
+                    " [src]="getImageUrl(review.user.profilePictureURL)" [alt]="
                       (review.user.firstName || '') +
                       ' ' +
                       (review.user.lastName || '')
-                    "
-                    class="rounded-circle me-3"
-                    style="width: 48px; height: 48px; object-fit: cover"
-                    (error)="onImageError($event, review.user)"
-                  />
-                  <div
-                    *ngIf="
+                    " class="rounded-circle me-3" style="width: 48px; height: 48px; object-fit: cover"
+                    (error)="onImageError($event, review.user)" />
+                  <div *ngIf="
                       !review.user?.profilePictureURL ||
                       imageErrors.has(review.user?.userId)
                     "
                     class="bg-dark rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                    style="width: 48px; height: 48px; font-size: 0.9rem"
-                  >
+                    style="width: 48px; height: 48px; font-size: 0.9rem">
                     {{
-                      getInitials(
-                        review.user.firstName || "",
-                        review.user.lastName || ""
-                      )
+                    getInitials(
+                    review.user.firstName || "",
+                    review.user.lastName || ""
+                    )
                     }}
                   </div>
                   <div>
@@ -217,26 +166,16 @@
                 <div class="mb-3">
                   <div class="d-flex align-items-center gap-1 mb-2">
                     <span style="color: #000000">
-                      <i
-                        *ngFor="let star of getStarArray(review.rating)"
-                        class="fas fa-star"
-                      ></i>
-                      <i
-                        *ngFor="let star of getStarArray(5 - review.rating)"
-                        class="far fa-star"
-                        style="color: #dee2e6"
-                      ></i>
+                      <i *ngFor="let star of review.starArray" class="fas fa-star"></i>
+                      <i *ngFor="let star of review.emptyStarArray" class="far fa-star" style="color: #dee2e6"></i>
                     </span>
                   </div>
                   <small class="text-muted">{{
                     getTimeAgo(review.createdAt)
-                  }}</small>
+                    }}</small>
                 </div>
 
-                <p
-                  class="text-dark mb-0"
-                  style="font-size: 0.95rem; line-height: 1.6"
-                >
+                <p class="text-dark mb-0" style="font-size: 0.95rem; line-height: 1.6">
                   {{ truncateText(review.comment || "", 150) }}
                 </p>
               </div>
@@ -245,18 +184,13 @@
         </div>
       </div>
 
-      <button
-        class="btn btn-md mt-3 px-4 py-3 fw-medium border shadow-sm rounded-3 show-more-reviews-btn"
-        (click)="openHostReviewsModal()"
-      >
+      <button class="btn btn-md mt-3 px-4 py-3 fw-medium border shadow-sm rounded-3 show-more-reviews-btn"
+        (click)="openHostReviewsModal()">
         Show more reviews
       </button>
     </div>
 
-    <hr
-      class="my-5"
-      *ngIf="(canShowReviews && hasHostReviews && hostProperties.length > 0) || propertiesLoading"
-    />
+    <hr class="my-5" *ngIf="(canShowReviews && hasHostReviews && hostPropertiesList.length > 0) || propertiesLoading" />
 
     <!-- Properties Loading State -->
     <div class="mb-5" *ngIf="propertiesLoading">
@@ -281,87 +215,56 @@
       </div>
     </div>
 
-    <div class="mb-5" *ngIf="canShowReviews && hostProperties.length > 0 && !propertiesLoading">
+    <div class="mb-5" *ngIf="canShowReviews && hostPropertiesList.length > 0 && !propertiesLoading">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fs-3 fw-bold text-dark mb-0">
           {{ userProfile.firstName || "Host" }}'s listings
         </h3>
         <div class="d-flex align-items-center gap-3">
           <div class="d-flex align-items-center gap-2">
-            <button
-              class="btn btn-outline-secondary rounded-circle p-2"
-              style="width: 40px; height: 40px"
-              (click)="scrollListings('left')"
-            >
+            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+              (click)="scrollListings('left')">
               <i class="fas fa-chevron-left"></i>
             </button>
-            <button
-              class="btn btn-outline-secondary rounded-circle p-2"
-              style="width: 40px; height: 40px"
-              (click)="scrollListings('right')"
-            >
+            <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+              (click)="scrollListings('right')">
               <i class="fas fa-chevron-right"></i>
             </button>
           </div>
-          <button
-            class="btn btn-link text-decoration-none p-0 fw-semibold text-dark"
-            (click)="openHostPropertiesModal()"
-          >
-            Show all {{ hostProperties.length }} listings
+          <button class="btn btn-link text-decoration-none p-0 fw-semibold text-dark"
+            (click)="openHostPropertiesModal()">
+            Show all {{ hostPropertiesList.length }} listings
             <i class="fas fa-chevron-right ms-1"></i>
           </button>
         </div>
       </div>
 
       <div class="overflow-hidden">
-        <div
-          #listingsContainer
-          class="d-flex gap-3 pb-2 transition-transform"
-          style="scroll-behavior: smooth; transform: translateX(0px)"
-        >
-          <div
-            class="flex-shrink-0"
-            *ngFor="let property of hostProperties.slice(0, 8)"
-          >
-            <div
-              class="card border shadow-sm h-100"
-              style="width: 240px; cursor: pointer"
-              (click)="navigateToProperty(property.id)"
-            >
+        <div #listingsContainer class="d-flex gap-3 pb-2 transition-transform"
+          style="scroll-behavior: smooth; transform: translateX(0px)">
+          <div class="flex-shrink-0" *ngFor="let property of hostPropertiesList.slice(0, 8)">
+            <div class="card border shadow-sm h-100" style="width: 240px; cursor: pointer"
+              (click)="navigateToProperty(property.id)">
               <div class="position-relative">
-                <img
-                  [src]="getPropertyImage(property)"
-                  [alt]="property.title"
-                  class="card-img-top"
-                  style="height: 160px; object-fit: cover"
-                  (error)="onImageError($event, property)"
-                  loading="lazy"
-                />
-                <div 
+                <img [src]="property.displayImage" [alt]="property.title" class="card-img-top"
+                  style="height: 160px; object-fit: cover" (error)="onImageError($event, property)" loading="lazy" />
+                <div
                   class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-light"
-                  style="border-radius: 8px 8px 0 0;"
-                  *ngIf="property.imageLoading"
-                >
+                  style="border-radius: 8px 8px 0 0;" *ngIf="property.imageLoading">
                   <div class="spinner-border spinner-border-sm text-primary" role="status">
                     <span class="visually-hidden">Loading image...</span>
                   </div>
                 </div>
               </div>
               <div class="card-body p-3">
-                <h6
-                  class="card-title text-dark fw-semibold mb-2"
-                  style="font-size: 0.9rem"
-                >
+                <h6 class="card-title text-dark fw-semibold mb-2" style="font-size: 0.9rem">
                   {{ property.title }}
                 </h6>
                 <div class="d-flex align-items-center">
                   <span style="color: #000000" class="me-1">
                     <i class="fas fa-star"></i>
                   </span>
-                  <span
-                    class="fw-semibold text-dark me-2"
-                    style="font-size: 0.85rem"
-                  >
+                  <span class="fw-semibold text-dark me-2" style="font-size: 0.85rem">
                     {{ property.averageRating | number : "1.1-1" }}
                   </span>
                   <small class="text-muted">
@@ -386,75 +289,46 @@
     <div class="row mb-4"></div>
 
     <!-- Guest-->
-    <div
-      class="d-flex flex-column flex-lg-row gap-4 align-items-start mb-5"
-      style="max-width: 1000px; margin: 0"
-      *ngIf="canShowProfile"
-    >
+    <div class="d-flex flex-column flex-lg-row gap-4 align-items-start mb-5" style="max-width: 1000px; margin: 0"
+      *ngIf="canShowProfile">
       <!-- Use shared profile card component -->
-      <app-profile-card
-        [firstName]="userProfile.firstName"
-        [lastName]="userProfile.lastName"
-        [country]="userProfile.country"
-        [profileImageUrl]="userProfile.profilePictureURL"
-        [userId]="userProfile.id"
-        [userType]="'Guest'"
-        [stats]="guestStats"
-        [showHeartBadge]="true"
-        [imageBaseUrl]="imageBaseUrl"
-        [imageErrors]="imageErrors"
-        [onImageErrorCallback]="onImageError.bind(this)"
-      ></app-profile-card>
+      <app-profile-card [firstName]="userProfile.firstName" [lastName]="userProfile.lastName"
+        [country]="userProfile.country" [profileImageUrl]="userProfile.profilePictureURL" [userId]="userProfile.id"
+        [userType]="'Guest'" [stats]="guestStats" [showHeartBadge]="true" [imageBaseUrl]="imageBaseUrl"
+        [imageErrors]="imageErrors" [onImageErrorCallback]="onImageError.bind(this)"></app-profile-card>
 
       <div class="flex-fill ps-lg-3">
         <h3 class="fs-4 fw-semibold text-dark mb-4">
           About {{ userProfile.firstName || "Guest" }}
         </h3>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="userProfile.bio"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="userProfile.bio">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-briefcase text-muted"></i>
           </div>
           <div class="text-dark">{{ userProfile.bio }}</div>
         </div>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="getBirthDecade()"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="getBirthDecade()">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-birthday-cake text-muted"></i>
           </div>
           <div class="text-dark">{{ getBirthDecade() }}</div>
         </div>
 
-        <div
-          class="d-flex align-items-start mb-3 gap-3"
-          *ngIf="userProfile.country"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+        <div class="d-flex align-items-start mb-3 gap-3" *ngIf="userProfile.country">
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-map-marker-alt text-muted"></i>
           </div>
           <div class="text-dark">Lives in {{ userProfile.country }}</div>
         </div>
 
         <div class="d-flex align-items-start mb-3 gap-3">
-          <div
-            class="d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; margin-top: 2px"
-          >
+          <div class="d-flex align-items-center justify-content-center"
+            style="width: 20px; height: 20px; margin-top: 2px">
             <i class="fas fa-shield-alt text-muted"></i>
           </div>
           <div class="text-success fw-medium">Identity verified</div>
@@ -472,46 +346,32 @@
         </h3>
 
         <div class="d-flex align-items-center gap-2">
-          <button
-            class="btn btn-outline-secondary rounded-circle p-2"
-            style="width: 40px; height: 40px"
-            (click)="scrollReviews('left')"
-          >
+          <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+            (click)="scrollReviews('left')">
             <i class="fas fa-chevron-left"></i>
           </button>
-          <button
-            class="btn btn-outline-secondary rounded-circle p-2"
-            style="width: 40px; height: 40px"
-            (click)="scrollReviews('right')"
-          >
+          <button class="btn btn-outline-secondary rounded-circle p-2" style="width: 40px; height: 40px"
+            (click)="scrollReviews('right')">
             <i class="fas fa-chevron-right"></i>
           </button>
         </div>
       </div>
 
       <div class="overflow-hidden">
-        <div
-          #reviewsContainer
-          class="d-flex gap-3 pb-2 transition-transform"
-          style="scroll-behavior: smooth; transform: translateX(0px)"
-        >
-          <div
-            class="flex-shrink-0"
-            *ngFor="let review of guestReviews.slice(0, 10)"
-            style="width: 220px"
-          >
+        <div #reviewsContainer class="d-flex gap-3 pb-2 transition-transform"
+          style="scroll-behavior: smooth; transform: translateX(0px)">
+          <div class="flex-shrink-0" *ngFor="let review of guestReviews.slice(0, 10)" style="width: 220px">
             <div class="card border-0 h-100" style="min-height: 240px">
               <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
                   <div
                     class="bg-dark rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                    style="width: 48px; height: 48px; font-size: 0.9rem"
-                  >
+                    style="width: 48px; height: 48px; font-size: 0.9rem">
                     {{
-                      getInitials(
-                        userProfile.firstName || "",
-                        userProfile.lastName || ""
-                      )
+                    getInitials(
+                    userProfile.firstName || "",
+                    userProfile.lastName || ""
+                    )
                     }}
                   </div>
                   <div>
@@ -527,26 +387,16 @@
                 <div class="mb-3">
                   <div class="d-flex align-items-center gap-1 mb-2">
                     <span style="color: #000000">
-                      <i
-                        *ngFor="let star of getStarArray(review.rating)"
-                        class="fas fa-star"
-                      ></i>
-                      <i
-                        *ngFor="let star of getStarArray(5 - review.rating)"
-                        class="far fa-star"
-                        style="color: #dee2e6"
-                      ></i>
+                      <i *ngFor="let star of review.starArray" class="fas fa-star"></i>
+                      <i *ngFor="let star of review.emptyStarArray" class="far fa-star" style="color: #dee2e6"></i>
                     </span>
                   </div>
                   <small class="text-muted">{{
                     getTimeAgo(review.createdAt)
-                  }}</small>
+                    }}</small>
                 </div>
 
-                <p
-                  class="text-dark mb-3"
-                  style="font-size: 0.95rem; line-height: 1.6"
-                >
+                <p class="text-dark mb-3" style="font-size: 0.95rem; line-height: 1.6">
                   {{ truncateText(review.comment || "", 120) }}
                 </p>
 
@@ -591,18 +441,13 @@
         </div>
       </div>
 
-      <button
-        class="btn btn-md mt-3 px-4 py-3 fw-medium border shadow-sm rounded-3 show-more-reviews-btn"
-        (click)="openGuestReviewsModal()"
-      >
+      <button class="btn btn-md mt-3 px-4 py-3 fw-medium border shadow-sm rounded-3 show-more-reviews-btn"
+        (click)="openGuestReviewsModal()">
         Show more reviews
       </button>
     </div>
 
-    <hr
-      class="my-5"
-      *ngIf="canShowReviews && hasGuestReviews && hasVisitedProperties"
-    />
+    <hr class="my-5" *ngIf="canShowReviews && hasGuestReviews && hasVisitedProperties" />
 
     <div class="mb-5" *ngIf="canShowReviews && hasVisitedProperties">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -613,19 +458,10 @@
 
       <div class="overflow-auto my-3">
         <div class="d-flex gap-3 pb-2" style="scroll-behavior: smooth">
-          <div
-            class="flex-shrink-0"
-            style="width: 180px"
-            *ngFor="let place of uniqueVisitedProperties"
-          >
-            <div
-              class="card h-100 border rounded-3"
-              style="min-height: 140px; cursor: pointer"
-              (click)="navigateToProperty(place.id)"
-            >
-              <div
-                class="card-body d-flex flex-column justify-content-center align-items-center text-center h-100 p-3"
-              >
+          <div class="flex-shrink-0" style="width: 180px" *ngFor="let place of uniqueVisitedProperties">
+            <div class="card h-100 border rounded-3" style="min-height: 140px; cursor: pointer"
+              (click)="navigateToProperty(place.id)">
+              <div class="card-body d-flex flex-column justify-content-center align-items-center text-center h-100 p-3">
                 <div class="text-dark mb-2 mx-auto" style="font-size: 1.5rem">
                   <i class="fas fa-map-marker-alt"></i>
                 </div>
@@ -646,12 +482,8 @@
   </div>
 
   <!-- Host Reviews Modal -->
-  <div
-    class="modal fade airbnb-modal"
-    [class.show]="showHostReviewsModal"
-    [style.display]="showHostReviewsModal ? 'block' : 'none'"
-    tabindex="-1"
-  >
+  <div class="modal fade airbnb-modal" [class.show]="showHostReviewsModal"
+    [style.display]="showHostReviewsModal ? 'block' : 'none'" tabindex="-1">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <!-- Header -->
@@ -659,11 +491,9 @@
           <h1 class="modal-title fs-4 fw-semibold text-dark">
             {{ hostReviews.length }} reviews
           </h1>
-          <button
-            type="button"
+          <button type="button"
             class="btn-close-custom d-flex align-items-center justify-content-center border-0 bg-transparent"
-            (click)="closeHostReviewsModal()"
-          >
+            (click)="closeHostReviewsModal()">
             <i class="fas fa-times fs-6 text-secondary"></i>
           </button>
         </div>
@@ -686,45 +516,32 @@
         </div> -->
 
         <!-- Modal Body -->
-        <div
-          class="modal-body px-4 py-4"
-          style="max-height: 60vh; overflow-y: auto"
-        >
-          <div
-            *ngFor="let review of hostReviews; let last = last"
-            [class]="last ? 'd-flex' : 'd-flex pb-4 mb-4 border-bottom'"
-          >
+        <div class="modal-body px-4 py-4" style="max-height: 60vh; overflow-y: auto">
+          <div *ngFor="let review of hostReviews; let last = last"
+            [class]="last ? 'd-flex' : 'd-flex pb-4 mb-4 border-bottom'">
             <!-- Avatar -->
-            <img
-              loading="lazy"
-              *ngIf="
+            <img loading="lazy" *ngIf="
                 shouldShowImage(
                   review.user?.profilePictureURL,
                   review.user?.userId
                 )
-              "
-              [src]="getImageUrl(review.user.profilePictureURL)"
-              [alt]="review.user.firstName + ' ' + review.user.lastName"
-              class="rounded-circle me-3 flex-shrink-0"
-              style="width: 56px; height: 56px; object-fit: cover"
-              (error)="onImageError($event, review.user)"
-            />
+              " [src]="getImageUrl(review.user.profilePictureURL)"
+              [alt]="review.user.firstName + ' ' + review.user.lastName" class="rounded-circle me-3 flex-shrink-0"
+              style="width: 56px; height: 56px; object-fit: cover" (error)="onImageError($event, review.user)" />
 
-            <div
-              *ngIf="
+            <div *ngIf="
                 shouldShowFallback(
                   review.user?.profilePictureURL,
                   review.user?.userId
                 )
               "
               class="avatar-fallback rounded-circle d-flex align-items-center justify-content-center text-white fw-semibold me-3 flex-shrink-0"
-              style="width: 56px; height: 56px; font-size: 20px"
-            >
+              style="width: 56px; height: 56px; font-size: 20px">
               {{
-                getInitials(
-                  review.user.firstName || "",
-                  review.user.lastName || ""
-                )
+              getInitials(
+              review.user.firstName || "",
+              review.user.lastName || ""
+              )
               }}
             </div>
 
@@ -736,19 +553,10 @@
 
               <div class="d-flex align-items-center my-2">
                 <div style="color: #000000" class="me-2">
-                  <i
-                    *ngFor="let star of getStarArray(review.rating)"
-                    class="fas fa-star"
-                  ></i>
-                  <i
-                    *ngFor="let star of getStarArray(5 - review.rating)"
-                    class="far fa-star"
-                    style="color: #dee2e6"
-                  ></i>
+                  <i *ngFor="let star of review.starArray" class="fas fa-star"></i>
+                  <i *ngFor="let star of review.emptyStarArray" class="far fa-star" style="color: #dee2e6"></i>
                 </div>
-                <span class="small text-secondary"
-                  >• {{ getTimeAgo(review.createdAt) }}</span
-                >
+                <span class="small text-secondary">• {{ getTimeAgo(review.createdAt) }}</span>
               </div>
 
               <p class="fs-6 text-dark mb-2" style="line-height: 1.5">
@@ -766,51 +574,30 @@
   </div>
 
   <!-- Host Properties Modal -->
-  <div
-    class="modal fade airbnb-modal"
-    [class.show]="showHostPropertiesModal"
-    [style.display]="showHostPropertiesModal ? 'block' : 'none'"
-    tabindex="-1"
-  >
+  <div class="modal fade airbnb-modal" [class.show]="showHostPropertiesModal"
+    [style.display]="showHostPropertiesModal ? 'block' : 'none'" tabindex="-1">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <!-- Header -->
         <div class="modal-header border-0 px-4 pt-4 pb-0">
           <h1 class="modal-title fs-4 fw-semibold text-dark">
-            {{ hostProperties.length }} listings
+            {{ hostPropertiesList.length }} listings
           </h1>
-          <button
-            type="button"
+          <button type="button"
             class="btn-close-custom d-flex align-items-center justify-content-center border-0 bg-transparent"
-            (click)="closeHostPropertiesModal()"
-          >
+            (click)="closeHostPropertiesModal()">
             <i class="fas fa-times fs-6 text-secondary"></i>
           </button>
         </div>
 
         <!-- Modal Body -->
-        <div
-          class="modal-body px-4 py-4"
-          style="max-height: 70vh; overflow-y: auto"
-        >
+        <div class="modal-body px-4 py-4" style="max-height: 70vh; overflow-y: auto">
           <div class="row g-4">
-            <div
-              *ngFor="let property of hostProperties"
-              class="col-12 col-md-6 col-lg-4"
-            >
-              <div
-                class="card h-100 border shadow-sm"
-                style="cursor: pointer; transition: all 0.3s ease"
-                (click)="navigateToProperty(property.id)"
-              >
-                <img
-                  [src]="getPropertyImage(property)"
-                  [alt]="property.title"
-                  class="card-img-top"
-                  style="height: 200px; object-fit: cover"
-                  loading="lazy"
-                  (error)="onImageError($event, property)"
-                />
+            <div *ngFor="let property of hostPropertiesList" class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 border shadow-sm" style="cursor: pointer; transition: all 0.3s ease"
+                (click)="navigateToProperty(property.id)">
+                <img [src]="property.displayImage" [alt]="property.title" class="card-img-top"
+                  style="height: 200px; object-fit: cover" loading="lazy" (error)="onImageError($event, property)" />
                 <div class="card-body p-3">
                   <h6 class="card-title fw-semibold mb-2">
                     {{ property.title }}
@@ -824,10 +611,9 @@
                     </span>
                     <span class="fw-semibold me-2">{{
                       property.averageRating | number : "1.1-1"
-                    }}</span>
+                      }}</span>
                     <small class="text-muted">
-                      ({{ property.reviewCount }} reviews)</small
-                    >
+                      ({{ property.reviewCount }} reviews)</small>
                   </div>
                 </div>
               </div>
@@ -839,12 +625,8 @@
   </div>
 
   <!-- Guest Reviews Modal -->
-  <div
-    class="modal fade airbnb-modal"
-    [class.show]="showGuestReviewsModal"
-    [style.display]="showGuestReviewsModal ? 'block' : 'none'"
-    tabindex="-1"
-  >
+  <div class="modal fade airbnb-modal" [class.show]="showGuestReviewsModal"
+    [style.display]="showGuestReviewsModal ? 'block' : 'none'" tabindex="-1">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <!-- Header -->
@@ -852,51 +634,32 @@
           <h1 class="modal-title fs-4 fw-semibold text-dark">
             My Reviews ({{ guestReviews.length }})
           </h1>
-          <button
-            type="button"
+          <button type="button"
             class="btn-close-custom d-flex align-items-center justify-content-center border-0 bg-transparent"
-            (click)="closeGuestReviewsModal()"
-          >
+            (click)="closeGuestReviewsModal()">
             <i class="fas fa-times fs-6 text-secondary"></i>
           </button>
         </div>
 
         <!-- Modal Body -->
-        <div
-          class="modal-body px-4 py-4"
-          style="max-height: 70vh; overflow-y: auto"
-        >
+        <div class="modal-body px-4 py-4" style="max-height: 70vh; overflow-y: auto">
           <div class="row g-4">
-            <div
-              *ngFor="let review of guestReviews"
-              class="col-12 col-md-6 col-lg-4"
-            >
+            <div *ngFor="let review of guestReviews" class="col-12 col-md-6 col-lg-4">
               <div class="card h-100" style="transition: all 0.2s ease">
                 <div class="card-body p-4">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-3"
-                  >
+                  <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                       <h6 class="card-title fw-semibold">
                         Property #{{ review.propertyId }}
                       </h6>
                       <small class="text-muted">{{
                         getTimeAgo(review.createdAt)
-                      }}</small>
+                        }}</small>
                     </div>
                     <div class="text-end">
                       <div style="color: #000000" class="mb-1">
-                        <i
-                          *ngFor="let star of getStarArray(review?.rating || 0)"
-                          class="fas fa-star"
-                        ></i>
-                        <i
-                          *ngFor="
-                            let star of getStarArray(5 - (review?.rating || 0))
-                          "
-                          class="far fa-star"
-                          style="color: #dee2e6"
-                        ></i>
+                        <i *ngFor="let star of review.starArray" class="fas fa-star"></i>
+                        <i *ngFor="let star of review.emptyStarArray" class="far fa-star" style="color: #dee2e6"></i>
                       </div>
                       <small class="text-muted">{{ review?.rating }}/5</small>
                     </div>
