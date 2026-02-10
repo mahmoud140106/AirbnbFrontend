@@ -51,6 +51,7 @@ export interface CalendarSettings {
 
 interface ProcessedDay {
   date: Date;
+  dayNumber: string; // Pre-calculated format(date, 'd')
   inCurrentMonth: boolean;
   isDisabled: boolean;
   isAvailable: boolean;
@@ -63,6 +64,10 @@ interface ProcessedDay {
 
 interface ProcessedMonth {
   month: Date;
+  monthName: string; // Pre-calculated format(month, 'MMMM')
+  monthKey: string; // Pre-calculated format(month, 'yyyy-MM')
+  yearNumber: string; // Pre-calculated format(month, 'yyyy')
+  fullMonthYear: string; // Pre-calculated format(month, 'MMMM yyyy')
   days: ProcessedDay[];
 }
 export type SelectionMode = 'single' | 'range' | 'multiple';
@@ -101,7 +106,7 @@ export class CalendarComponent implements OnInit, OnChanges {
   private selectedDatesSet = new Set<string>();
   private monthDaysCache = new Map<
     string,
-    { date: Date; inCurrentMonth: boolean }[]
+    { date: Date; inCurrentMonth: boolean; dateKey: string; dayNumber: string }[]
   >();
 
   showViewDropdown = false;
@@ -238,91 +243,70 @@ export class CalendarComponent implements OnInit, OnChanges {
 
 
 
-  private getCachedMonthDays(monthKey: string): { date: string; inCurrentMonth: boolean }[] | null {
-    const cached = localStorage.getItem(`month-${monthKey}`);
-    return cached ? JSON.parse(cached) : null;
-  }
-
-  private cacheMonthDays(monthKey: string, data: { date: string; inCurrentMonth: boolean }[]) {
-    localStorage.setItem(`month-${monthKey}`, JSON.stringify(data));
-  }
-
   private generateProcessedMonth(monthDate: Date): ProcessedMonth {
     const monthKey = format(monthDate, 'yyyy-MM');
+    const monthName = format(monthDate, 'MMMM');
+    const today = startOfDay(new Date());
 
     // Get or generate month days
     let monthDays = this.monthDaysCache.get(monthKey);
 
     if (!monthDays) {
-      const cached = this.getCachedMonthDays(monthKey);
-      if (cached) {
-        monthDays = cached.map((d) => ({
-          date: new Date(d.date),
-          inCurrentMonth: d.inCurrentMonth
-        }));
-      } else {
-        const start = startOfWeek(startOfMonth(monthDate));
-        const end = endOfWeek(endOfMonth(monthDate));
-        monthDays = eachDayOfInterval({ start, end }).map((date) => ({
-          date,
-          inCurrentMonth: isSameMonth(date, monthDate),
-        }));
-        this.cacheMonthDays(monthKey, monthDays.map(d => ({
-          date: d.date.toISOString(),
-          inCurrentMonth: d.inCurrentMonth
-        })));
-      }
-
+      const start = startOfWeek(startOfMonth(monthDate));
+      const end = endOfWeek(endOfMonth(monthDate));
+      monthDays = eachDayOfInterval({ start, end }).map((date) => ({
+        date,
+        inCurrentMonth: isSameMonth(date, monthDate),
+        dateKey: format(date, 'yyyy-MM-dd'),
+        dayNumber: format(date, 'd'),
+      }));
       this.monthDaysCache.set(monthKey, monthDays);
     }
 
+    const selectedDates = this.settings.selectedDates;
+    const hasTwoSelected = selectedDates.length === 2;
+    const [rangeStart, rangeEnd] = hasTwoSelected
+      ? [...selectedDates].sort((a, b) => a.getTime() - b.getTime())
+      : [null, null];
+
     // Process each day
     const processedDays: ProcessedDay[] = monthDays.map((day) => {
-      const dateKey = format(day.date, 'yyyy-MM-dd');
+      const dateKey = day.dateKey;
       const availability = this.availabilityMap.get(dateKey);
-      const today = startOfDay(new Date());
 
       const isDisabled = isBefore(day.date, today);
-      const isAvailable =
-        !isDisabled && (availability ? availability.available : true);
       const isSelected = this.selectedDatesSet.has(dateKey);
-      // const isHighlighted = this.calculateIsHighlighted(day.date);
-      const isHighlighted =
-        isSelected ||
-        (this.settings.selectionMode === 'range' &&
-          this.settings.selectedDates.length === 2 &&
-          isAfter(day.date, this.settings.selectedDates[0]) &&
-          isBefore(day.date, this.settings.selectedDates[1]));
-      const price = availability ? availability.price : null;
 
-      const isBooked = availability?.isBooked ?? false;
+      let isHighlighted = isSelected;
+      if (!isHighlighted && this.settings.selectionMode === 'range' && hasTwoSelected && rangeStart && rangeEnd) {
+        isHighlighted = isAfter(day.date, rangeStart) && isBefore(day.date, rangeEnd);
+      }
 
       return {
         date: day.date,
+        dayNumber: day.dayNumber,
         inCurrentMonth: day.inCurrentMonth,
         isDisabled,
-        isAvailable,
+        isAvailable: !isDisabled && (availability ? availability.available : true),
         isSelected,
         isHighlighted,
-        price,
+        price: availability ? availability.price : null,
         dateKey,
-        isBooked,
+        isBooked: availability?.isBooked ?? false,
       };
     });
 
     return {
       month: monthDate,
+      monthName,
+      monthKey,
+      yearNumber: format(monthDate, 'yyyy'),
+      fullMonthYear: format(monthDate, 'MMMM yyyy'),
       days: processedDays,
     };
   }
 
-  private calculateIsHighlighted(date: Date): boolean {
-    if (this.settings.selectedDates.length !== 2) return false;
-    const [start, end] = this.settings.selectedDates.sort(
-      (a, b) => a.getTime() - b.getTime()
-    );
-    return isAfter(date, start) && isBefore(date, end);
-  }
+
 
   // selectDate(date: Date) {
 
@@ -515,15 +499,12 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.settingsChanged.emit(this.settings);
   }
 
-  // Helper methods for template
-  format = format;
-
   trackByDate(index: number, day: ProcessedDay) {
     return day.dateKey;
   }
 
   trackByMonth(index: number, month: ProcessedMonth) {
-    return format(month.month, 'yyyy-MM');
+    return month.monthKey;
   }
 
   // get canGoToPreviousMonth(): boolean {

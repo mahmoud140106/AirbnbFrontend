@@ -549,30 +549,61 @@
     height: auto;
     border-left: none;
     border-top: 1px solid #ebebeb;
-    padding: 16px;
+    padding: 20px 16px;
+    background: #fff;
   }
 
   .input-row {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .settings-header {
+    margin-bottom: 20px;
+    text-align: center;
   }
 
   .settings-header h2 {
     font-size: 20px;
   }
 
-  .block-options-panel {
-    min-width: 260px;
-    margin: 0 16px;
+  .block-options {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .block-toggle {
+    flex: 1;
+    text-align: center;
   }
 
   .discount-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    flex-direction: row; /* Keep row but maybe wrap if text is long */
+    align-items: center;
+    padding: 12px;
   }
 
   .discount-value {
-    text-align: left;
+    text-align: right;
+  }
+
+  .settings-tabs {
+    margin: 0 -16px 20px -16px;
+  }
+
+  .tab-btn {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .price-input-group {
+    justify-content: center;
+  }
+
+  .price-input {
+    width: 100%;
+    max-width: 160px;
   }
 }
 

@@ -417,37 +417,110 @@
 }
 
 @media (max-width: 768px) {
+  .calendar-container {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .calendar-header {
-    padding: 16px;
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mode-tabs {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mode-tab {
+    padding: 6px 8px;
+    font-size: 12px;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .calendar-grid {
-    padding: 16px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   .months-container {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
+    width: 100%;
   }
 
   .month-block {
-    min-width: unset;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .year-display {
-    font-size: 24px;
+    font-size: 20px;
+    text-align: center;
   }
 
   .day-cell {
-    min-height: 40px;
+    min-height: 44px;
+    padding: 2px;
   }
 
   .day-number {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .day-price {
-    font-size: 9px;
+    font-size: 10px;
+  }
+
+  .view-dropdown,
+  .view-dropdown-2 {
+    width: 100% !important;
+    max-width: 100vw;
+    right: 0;
+    left: 0;
+    margin: 0;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    border-radius: 20px 20px 0 0;
+    max-height: 60vh;
+    transform: translateY(100%);
+    box-sizing: border-box;
+  }
+
+  .view-dropdown.show,
+  .view-dropdown-2.show {
+    transform: translateY(0);
+  }
+
+  .d-flex.items-center.gap-2 {
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .view-selector, .view-selector-2 {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .view-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

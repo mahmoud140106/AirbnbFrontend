@@ -145,17 +145,17 @@
 
   .calendar-area {
     flex: none !important;
-    min-height: auto;
+    width: 100%;
   }
 
   .settings-area {
     flex: none;
     max-width: none;
-    min-width: auto;
+    min-width: unset;
     border-left: none;
-    border-top: 1px solid #e9ecef;
-    min-height: 400px;
-    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #eee;
+    min-height: auto;
+    background: #fff;
   }
 }
 

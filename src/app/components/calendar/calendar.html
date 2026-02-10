@@ -5,25 +5,13 @@
     <!-- <div class="year-display"></div> -->
     <!-- Selection Mode Tabs -->
     <div class="mode-tabs">
-      <button
-        class="mode-tab"
-        [class.active]="selectionMode === 'single'"
-        (click)="setSelectionMode('single')"
-      >
+      <button class="mode-tab" [class.active]="selectionMode === 'single'" (click)="setSelectionMode('single')">
         {{ 'CALENDAR.MODE.SINGLE' | translate }}
       </button>
-      <button
-        class="mode-tab"
-        [class.active]="selectionMode === 'range'"
-        (click)="setSelectionMode('range')"
-      >
+      <button class="mode-tab" [class.active]="selectionMode === 'range'" (click)="setSelectionMode('range')">
         {{ 'CALENDAR.MODE.RANGE' | translate }}
       </button>
-      <button
-        class="mode-tab"
-        [class.active]="selectionMode === 'multiple'"
-        (click)="setSelectionMode('multiple')"
-      >
+      <button class="mode-tab" [class.active]="selectionMode === 'multiple'" (click)="setSelectionMode('multiple')">
         {{ 'CALENDAR.MODE.MULTIPLE' | translate }}
       </button>
     </div>
@@ -40,26 +28,15 @@
 
         <div class="view-dropdown-2" [class.show]="showPropertyDropdown">
           <div class="dropdown-content">
-            <label
-              *ngFor="let property of properties"
-              class="radio-option justify-content-between"
-            >
-              <input
-                type="radio"
-                name="property"
-                [value]="property.id"
+            <label *ngFor="let property of properties" class="radio-option justify-content-between">
+              <input type="radio" name="property" [value]="property.id"
                 [checked]="selectedPropertyId === property.id.toString()"
-                (change)="setProperty(property.id.toString())"
-              />
+                (change)="setProperty(property.id.toString())" />
               <span class="radio-custom"></span>
               <div class="d-flex items-center justify-content-between gap-2">
                 <p class="mb-0">{{ property.title }}</p>
-                <img
-                  alt="{{ property.title }}"
-                  [src]="getPropertyImage(property)"
-                  class="propertyavatar"
-                  loading="lazy"
-                />
+                <img alt="{{ property.title }}" [src]="getPropertyImage(property)" class="propertyavatar"
+                  loading="lazy" />
               </div>
             </label>
 
@@ -73,20 +50,10 @@
       </div>
 
       <div class="view-selector">
-        <button
-          class="view-btn"
-          [class.active]="settings.viewType === 'month'"
-          (click)="toggleViewType()"
-        >
+        <button class="view-btn" [class.active]="settings.viewType === 'month'" (click)="toggleViewType()">
           {{ 'CALENDAR.ACTIONS.VIEW' | translate }}
 
-          <svg
-            class="dropdown-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6,9 12,15 18,9"></polyline>
           </svg>
         </button>
@@ -94,24 +61,14 @@
         <div class="view-dropdown" [class.show]="showViewDropdown">
           <div class="dropdown-content">
             <label class="radio-option">
-              <input
-                type="radio"
-                name="viewType"
-                value="month"
-                [checked]="settings.viewType === 'month'"
-                (change)="setViewType('month')"
-              />
+              <input type="radio" name="viewType" value="month" [checked]="settings.viewType === 'month'"
+                (change)="setViewType('month')" />
               <span class="radio-custom"></span>
               {{ 'CALENDAR.VIEW.MONTH' | translate }}
             </label>
             <label class="radio-option">
-              <input
-                type="radio"
-                name="viewType"
-                value="year"
-                [checked]="settings.viewType === 'year'"
-                (change)="setViewType('year')"
-              />
+              <input type="radio" name="viewType" value="year" [checked]="settings.viewType === 'year'"
+                (change)="setViewType('year')" />
               <span class="radio-custom"></span>
               {{ 'CALENDAR.VIEW.YEAR' | translate }}
             </label>
@@ -134,15 +91,9 @@
     <!-- Year View - Multiple Months -->
     <ng-container *ngIf="settings.viewType === 'year'">
       <div class="months-container">
-        <div
-          class="month-block"
-          *ngFor="let monthData of processedMonths; trackBy: trackByMonth"
-        >
+        <div class="month-block" *ngFor="let monthData of processedMonths; trackBy: trackByMonth">
           <div class="month-header">
-            <h3>{{ format(monthData.month, "MMMM") }}</h3>
-            <!-- <span class="discount-indicator" *ngIf="monthData.hasDiscount">
-              1 discount
-            </span> -->
+            <h3>{{ monthData.monthName }}</h3>
           </div>
 
           <!-- Days of week header -->
@@ -152,21 +103,13 @@
 
           <!-- Calendar days -->
           <div class="days-grid">
-            <div
-              class="day-cell"
-              *ngFor="let day of monthData.days; trackBy: trackByDate"
-              [class.other-month]="!day.inCurrentMonth"
-              [class.disabled]="day.isDisabled || day.isBooked"
-              [class.booked]="day.isBooked"
-              [class.available]="day.isAvailable"
-              [class.not-available]="
+            <div class="day-cell" *ngFor="let day of monthData.days; trackBy: trackByDate"
+              [class.other-month]="!day.inCurrentMonth" [class.disabled]="day.isDisabled || day.isBooked"
+              [class.booked]="day.isBooked" [class.available]="day.isAvailable" [class.not-available]="
                 !day.isAvailable && day.inCurrentMonth && !day.isDisabled
-              "
-              [class.selected]="day.isSelected"
-              [class.highlighted]="day.isHighlighted"
-              (click)="selectDate(day.date)"
-            >
-              <div class="day-number">{{ format(day.date, "d") }}</div>
+              " [class.selected]="day.isSelected" [class.highlighted]="day.isHighlighted"
+              (click)="selectDate(day.date)">
+              <div class="day-number">{{ day.dayNumber }}</div>
               <div class="day-price" *ngIf="day.price && !day.isDisabled">
                 ${{ day.price }}
               </div>
@@ -177,39 +120,19 @@
     </ng-container>
 
     <!-- Month View - Single Month -->
-    <ng-container
-      *ngIf="settings.viewType === 'month' && processedCurrentMonth"
-    >
+    <ng-container *ngIf="settings.viewType === 'month' && processedCurrentMonth">
       <div class="single-month">
         <div class="month-navigation">
-          <button
-            class="nav-btn"
-            [disabled]="!canGoToPreviousMonth"
-            (click)="previousMonth()"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+          <button class="nav-btn" [disabled]="!canGoToPreviousMonth" (click)="previousMonth()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="15,18 9,12 15,6"></polyline>
             </svg>
           </button>
 
-          <h2>{{ format(currentMonth, "MMMM yyyy") }}</h2>
+          <h2>{{ processedCurrentMonth.fullMonthYear }}</h2>
 
-          <button
-            class="nav-btn"
-            [disabled]="!canGoToNextMonth"
-            (click)="nextMonth()"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+          <button class="nav-btn" [disabled]="!canGoToNextMonth" (click)="nextMonth()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9,18 15,12 9,6"></polyline>
             </svg>
           </button>
@@ -222,21 +145,12 @@
 
         <!-- Calendar days -->
         <div class="days-grid">
-          <div
-            class="day-cell"
-            *ngFor="let day of processedCurrentMonth.days; trackBy: trackByDate"
-            [class.other-month]="!day.inCurrentMonth"
-            [class.disabled]="day.isDisabled || day.isBooked"
-            [class.booked]="day.isBooked"
-            [class.available]="day.isAvailable"
-            [class.not-available]="
+          <div class="day-cell" *ngFor="let day of processedCurrentMonth.days; trackBy: trackByDate"
+            [class.other-month]="!day.inCurrentMonth" [class.disabled]="day.isDisabled || day.isBooked"
+            [class.booked]="day.isBooked" [class.available]="day.isAvailable" [class.not-available]="
               !day.isAvailable && day.inCurrentMonth && !day.isDisabled
-            "
-            [class.selected]="day.isSelected"
-            [class.highlighted]="day.isHighlighted"
-            (click)="selectDate(day.date)"
-          >
-            <div class="day-number">{{ format(day.date, "d") }}</div>
+            " [class.selected]="day.isSelected" [class.highlighted]="day.isHighlighted" (click)="selectDate(day.date)">
+            <div class="day-number">{{ day.dayNumber }}</div>
             <div class="day-price" *ngIf="day.price && !day.isDisabled">
               ${{ day.price }}
             </div>
