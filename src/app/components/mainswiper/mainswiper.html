@@ -1,81 +1,48 @@
 <div class="properties-container container">
   <!-- Header -->
-  <div class="header mt-3">
+  <div class="header mt-16">
     <h2 class="title">{{ title }}</h2>
     <div class="navigation-arrows" dir="ltr">
-      <button
-        class="nav-btn prev-btn"
-        (click)="slidePrev()"
-        [disabled]="isBeginning"
-      >
+      <button class="nav-btn prev-btn" (click)="slidePrev()" [disabled]="isBeginning">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M15 18L9 12L15 6"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
       <button class="nav-btn next-btn" (click)="slideNext()" [disabled]="isEnd">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M9 18L15 12L9 6"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
     </div>
   </div>
 
   <!-- Swiper Container -->
-  <swiper-container
-    #swiperEl
-    [attr.slides-per-view]="slidesPerView"
-    space-between="16"
-    grab-cursor="true"
-    mousewheel="false"
-    keyboard="true"
-    [breakpoints]="breakpoints"
-  >
-    <ng-container *ngIf="!isLoading; else shimmerSlides">
-      <swiper-slide
-        *ngFor="let property of properties; trackBy: trackByPropertyId"
-      >
-        <app-slider-card
-          (cardClick)="onCardClicked($event)"
-          (wishlistClick)="onWishListClick($event)"
-          [propertyId]="property.id"
-          [title]="property.title"
-          [imageUrl]="getPropertyImage(property)"
-          [price]="property.pricePerNight"
-          [description]="property.description"
-          [rating]="property.averageRating"
-          [isFavourite]="property.isFavourite ?? false"
-          [reviewCount]="property.reviewCount"
-        ></app-slider-card>
-      </swiper-slide>
-    </ng-container>
-
-    <ng-template #shimmerSlides>
-      <swiper-slide *ngFor="let n of [1, 2, 3, 4, 5, 6, 7]">
-        <div class="shimmer-card p-2 rounded-2">
-          <div class="shimmer shimmer-img rounded-4 mb-2 ratio-1x1 w-100"></div>
-
-          <div class="shimmer shimmer-line mb-1 w-75"></div>
-
-          <div class="shimmer shimmer-line mb-1 w-50"></div>
-
-          <div class="d-flex justify-content-between mt-2">
-            <div class="shimmer shimmer-line w-25"></div>
-            <div class="shimmer shimmer-line w-25"></div>
-          </div>
+  <swiper-container #swiperEl init="false">
+    @if (!isLoading) {
+    @for (property of properties; track property.id) {
+    <swiper-slide>
+      <app-slider-card (cardClick)="onCardClicked($event)" (wishlistClick)="onWishListClick($event)"
+        [propertyId]="property.id" [title]="property.title" [imageUrl]="getPropertyImage(property)"
+        [price]="property.pricePerNight" [description]="property.description" [rating]="property.averageRating"
+        [isFavourite]="property.isFavourite ?? false" [reviewCount]="property.reviewCount"></app-slider-card>
+    </swiper-slide>
+    }
+    } @else {
+    @for (n of [1, 2, 3, 4, 5, 6, 7]; track $index) {
+    <swiper-slide>
+      <div class="shimmer-card p-2 rounded-2">
+        <div class="shimmer shimmer-img rounded-4 mb-2 ratio-1x1 w-100"></div>
+        <div class="shimmer shimmer-line mb-1 w-75"></div>
+        <div class="shimmer shimmer-line mb-1 w-50"></div>
+        <div class="d-flex justify-content-between mt-2">
+          <div class="shimmer shimmer-line w-25"></div>
+          <div class="shimmer shimmer-line w-25"></div>
         </div>
-      </swiper-slide>
-    </ng-template>
+      </div>
+    </swiper-slide>
+    }
+    }
   </swiper-container>
 </div>

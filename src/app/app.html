@@ -1,12 +1,6 @@
-@if (!showOverlay) 
-{
-    <app-login></app-login>
-    <app-register></app-register>
-    <app-confirm></app-confirm>
-    <app-reset-password></app-reset-password>
-    <router-outlet></router-outlet>
-}@else {
-    <app-blocking-overlay *ngIf="showOverlay"></app-blocking-overlay>   
-}
+<app-login></app-login>
+<app-register></app-register>
+<app-confirm></app-confirm>
+<app-reset-password></app-reset-password>
+<router-outlet></router-outlet>
 <!-- <app-signalr-test></app-signalr-test> -->
-

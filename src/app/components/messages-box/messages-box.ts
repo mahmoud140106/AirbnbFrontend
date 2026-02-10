@@ -34,6 +34,7 @@ interface MessageThread {
   time: string;
   tripDetails?: string;
   isUnread?: boolean;
+  unreadCount?: number;
   propertyId: number;
   hostId: string;
   userId: string;
@@ -44,7 +45,7 @@ interface MessageThread {
   selector: 'app-messages-box',
   templateUrl: './messages-box.html',
   styleUrls: ['./messages-box.css'],
-  imports: [CommonModule, FormsModule,TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   standalone: true
 })
 export class MessagesBoxComponent implements OnInit, OnDestroy {
@@ -123,9 +124,9 @@ export class MessagesBoxComponent implements OnInit, OnDestroy {
 
     private authService: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.loadChatSessions();
     this.setupSignalRHandlers();
   }
@@ -190,7 +191,7 @@ ngOnInit(): void {
     this.signalRService.messageReceived$
       .pipe(takeUntil(this.destroy$))
       .subscribe((response) => {
-        console.log("messageRecived",response)
+        console.log("messageRecived", response)
         this.refreshChatSessions();
       });
   }
@@ -248,6 +249,7 @@ ngOnInit(): void {
       preview: session.lastMessageText,
       time: this.formatTime(session.lastActivityAt),
       isUnread: session.unreadCount > 0,
+      unreadCount: session.unreadCount,
       propertyId: session.propertyId,
       hostId: session.hostId,
       userId: session.userId,

@@ -2,6 +2,7 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   OnInit,
+  AfterViewInit,
   ViewChild,
   ElementRef,
   Input,
@@ -25,7 +26,7 @@ register();
   templateUrl: './mainswiper.html',
   styleUrls: ['./mainswiper.css'],
 })
-export class PropertySwiperComponent implements OnInit {
+export class PropertySwiperComponent implements OnInit, AfterViewInit {
   @Input() isLoading: boolean = false;
   @Input() title: string = '';
   @Input() slidesPerView: number = 3;
@@ -48,18 +49,40 @@ export class PropertySwiperComponent implements OnInit {
   breakpoints: any = {};
   @Input() properties: Property[] = [];
 
-  ngOnInit(): void {
-    this.breakpoints = {
-      320: { slidesPerView: 1, spaceBetween: 12 },
-      640: { slidesPerView: 2, spaceBetween: 16 },
-      768: { slidesPerView: 3, spaceBetween: 16 },
-      1024: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
-      1280: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
+  ngAfterViewInit(): void {
+    const swiperEl = this.swiperEl?.nativeElement;
+
+    const swiperParams = {
+      slidesPerView: 1.2, // Mobile default
+      spaceBetween: 16,
+      grabCursor: true,
+      breakpoints: {
+        320: { slidesPerView: 1.2, spaceBetween: 12 },
+        480: { slidesPerView: 1.5, spaceBetween: 12 },
+        640: { slidesPerView: 2.2, spaceBetween: 16 },
+        768: { slidesPerView: 3, spaceBetween: 16 },
+        1024: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
+        1280: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
+      },
+      on: {
+        init: () => {
+          this.updateNavigationState();
+        },
+        slideChange: () => {
+          this.updateNavigationState();
+        }
+      }
     };
 
-    setTimeout(() => {
+    if (swiperEl) {
+      Object.assign(swiperEl, swiperParams);
+      swiperEl.initialize();
       this.setupSwiperEvents();
-    }, 100);
+    }
+  }
+
+  ngOnInit(): void {
+    // Breakpoints are now handled in ngAfterViewInit
   }
 
   private setupSwiperEvents(): void {

@@ -2,6 +2,18 @@
   margin-top: 12rem !important;
 }
 
+@media (max-width: 991px) {
+  .mt {
+    margin-top: 8rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .mt {
+    margin-top: 6rem !important;
+  }
+}
+
 .noscroll {
   overflow: hidden;
   /* position: fixed; */

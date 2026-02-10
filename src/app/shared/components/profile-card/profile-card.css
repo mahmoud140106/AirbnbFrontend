@@ -1,8 +1,32 @@
-.profile-card.clickable:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+/* profile-card.css */
+.profile-card-main {
+    min-width: 320px;
+    width: 100%;
+    max-width: 400px;
     transition: all 0.2s ease-in-out;
 }
 
+.profile-card-main.clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
 
+@media (max-width: 576px) {
+    .profile-card-main {
+        min-width: unset;
+        width: 100%;
+        padding: 1.5rem !important;
+    }
+    
+    .border-start {
+        border-left: none !important;
+        border-top: 1px solid #dee2e6 !important;
+        padding-left: 0 !important;
+        padding-top: 1rem !important;
+        width: 100%;
+    }
 
+    .flex-md-row {
+        flex-direction: column !important;
+    }
+}

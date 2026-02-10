@@ -23,3 +23,40 @@ footer {
 .secondary-text {
   color: var(--secondary-text-color);
 }
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 2rem 1.5rem !important;
+  }
+
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    white-space: nowrap;
+  }
+
+  .footer-container .row > div {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Stack the copyright and social section */
+  .footer-container > .d-flex.justify-content-between {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footer-container .d-flex.align-items-center.gap-3 {
+    justify-content: center;
+  }
+}

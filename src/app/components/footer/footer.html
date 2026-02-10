@@ -1,42 +1,24 @@
-<footer
-  class="footer-container d-flex flex-column justify-content-center col-12 mx-auto p-5"
->
+<footer class="footer-container d-flex flex-column justify-content-center col-12 mx-auto p-5">
   <div class="col-12 col-md-11 align-self-center">
     <!-- Tab Buttons -->
     <ul class="nav nav-tabs mb-4" role="tablist">
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          [class.active]="activeTab === 'unique'"
-          (click)="selectTab('unique')"
-        >
+        <button class="nav-link" [class.active]="activeTab === 'unique'" (click)="selectTab('unique')">
           Unique stays
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          [class.active]="activeTab === 'categories'"
-          (click)="selectTab('categories')"
-        >
+        <button class="nav-link" [class.active]="activeTab === 'categories'" (click)="selectTab('categories')">
           Categories
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          [class.active]="activeTab === 'tips'"
-          (click)="selectTab('tips')"
-        >
+        <button class="nav-link" [class.active]="activeTab === 'tips'" (click)="selectTab('tips')">
           Travel tips & inspiration
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          [class.active]="activeTab === 'apartments'"
-          (click)="selectTab('apartments')"
-        >
+        <button class="nav-link" [class.active]="activeTab === 'apartments'" (click)="selectTab('apartments')">
           Airbnb-friendly apartments
         </button>
       </li>
@@ -44,10 +26,7 @@
 
     <!-- Tab Contents -->
     <div [hidden]="activeTab !== 'unique'" class="row text-dark mb-5">
-      <div
-        class="col-6 col-md-3 d-flex flex-column"
-        *ngFor="let item of unique"
-      >
+      <div class="col-6 col-md-3 d-flex flex-column" *ngFor="let item of unique">
         <p class="primary-text bold text-bold">{{ item.style }}</p>
         <p class="secondary-text">{{ item.location }}</p>
       </div>
@@ -80,7 +59,7 @@
         <li *ngFor="let item of supportLinks" class="mb-2">
           <a href="#" class="text-decoration-none secondary-text mb-2">{{
             item
-          }}</a>
+            }}</a>
         </li>
       </ul>
     </div>
@@ -112,25 +91,20 @@
       <span class="mx-1">·</span>
       <a href="#" class="primary-text text-decoration-none">Privacy</a>
       <span class="mx-1">·</span>
-      <a href="#" class="primary-text text-decoration-none"
-        >Your Privacy Choices</a
-      >
-      <span class="ms-1">
+      <!-- <a href="#" class="primary-text text-decoration-none">Your Privacy Choices</a> -->
+      <!-- <span class="ms-1">
         <img
           src="../../../assets/images/leave a review.webp"
           loading="lazy"
           alt="Privacy Icon"
           style="height: 16px"
         />
-      </span>
+      </span> -->
     </div>
 
     <!-- Right side: Language, Currency, Socials -->
     <div class="d-flex align-items-center gap-3">
-      <a
-        href="#"
-        class="secondary-text text-decoration-none d-flex align-items-center gap-1"
-      >
+      <a href="#" class="secondary-text text-decoration-none d-flex align-items-center gap-1">
         <i class="bi bi-globe2"></i> English (US)
       </a>
       <span>EGP</span>

@@ -22,6 +22,10 @@
   width: 102px;
 }
 
+.airbnb-logo {
+  margin-right: 3.5rem;
+}
+
 .switch-to-hosting-btn {
   padding: 0.75rem 1rem;
   border-radius: 9999px;
@@ -157,8 +161,30 @@
     outline: none;
   }
 
-  .airbnb-header .search-input-mobile::placeholder {
-    color: var(--secondary-text-color);
+  .airbnb-logo {
+    margin-right: 0 !important;
+  }
+
+  .airbnb-logo svg {
+    width: 80px; /* Smaller logo on mobile to make space */
+  }
+
+  .airbnb-header .container-fluid {
+    flex-wrap: nowrap !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .switch-to-hosting-btn {
+    display: inline-block !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+    margin-right: 5px;
+  }
+
+  .user-menu-button {
+    padding: 4px 8px !important;
   }
 }
 

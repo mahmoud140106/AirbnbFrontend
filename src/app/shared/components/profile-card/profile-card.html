@@ -1,36 +1,20 @@
-<div
-  class="bg-white rounded-4 p-4 shadow-sm border flex-shrink-0"
-  style="min-width: 380px"
-  [class.clickable]="clickable && userId"
-  (click)="navigateToProfile()"
-  (keydown)="onKeyDown($event)"
-  [attr.tabindex]="clickable && userId ? '0' : null"
-  style="min-width: 380px; cursor: pointer"
->
+<div class="bg-white rounded-4 p-4 shadow-sm border flex-shrink-0 profile-card-main"
+  [class.clickable]="clickable && userId" (click)="navigateToProfile()" (keydown)="onKeyDown($event)"
+  [attr.tabindex]="clickable && userId ? '0' : null" style="cursor: pointer">
   <div class="d-flex flex-column flex-md-row align-items-center gap-4">
     <div class="flex-shrink-0 text-center">
       <div class="position-relative d-inline-block mb-3">
-        <img
-          *ngIf="shouldShowImage(profileImageUrl, userId)"
-          [src]="getImageUrl(profileImageUrl)"
-          [alt]="firstName + ' ' + lastName"
-          class="rounded-circle"
-          style="width: 80px; height: 80px; object-fit: cover"
-          (error)="onImageError($event)"
-          loading="lazy"
-        />
-        <div
-          *ngIf="shouldShowFallback(profileImageUrl, userId)"
+        <img *ngIf="shouldShowImage(profileImageUrl, userId)" [src]="getImageUrl(profileImageUrl)"
+          [alt]="firstName + ' ' + lastName" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover"
+          (error)="onImageError($event)" loading="lazy" />
+        <div *ngIf="shouldShowFallback(profileImageUrl, userId)"
           class="bg-dark rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-          style="width: 80px; height: 80px; font-size: 2rem"
-        >
+          style="width: 80px; height: 80px; font-size: 2rem">
           {{ getInitials(firstName || "", lastName || "") }}
         </div>
         <div
           class="position-absolute top-0 start-100 translate-middle bg-danger rounded-circle d-flex align-items-center justify-content-center text-white"
-          style="width: 20px; height: 20px; font-size: 0.7rem"
-          *ngIf="showHeartBadge"
-        >
+          style="width: 20px; height: 20px; font-size: 0.7rem" *ngIf="showHeartBadge">
           <i class="fas fa-heart"></i>
         </div>
       </div>
@@ -44,14 +28,9 @@
 
     <div class="flex-fill border-start ps-4" *ngIf="stats">
       <div class="d-flex flex-column gap-3">
-        <div
-          class="d-flex justify-content-between align-items-center py-2"
-          *ngFor="let stat of statsArray"
-        >
+        <div class="d-flex justify-content-between align-items-center py-2" *ngFor="let stat of statsArray">
           <span class="fs-5 text-dark fw-medium">{{ stat.label }}</span>
-          <span
-            class="fs-5 fw-semibold text-dark d-flex align-items-center gap-1"
-          >
+          <span class="fs-5 fw-semibold text-dark d-flex align-items-center gap-1">
             {{ stat.value }}
             <i *ngIf="stat.icon" [ngClass]="stat.icon"></i>
           </span>

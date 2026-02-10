@@ -1,23 +1,23 @@
 <div class="chat-container" (click)="closeEmojiPicker()">
   <!-- Header -->
-  <div class="chat-header">
+  <div class="chat-header" (click)="onHeaderClick()">
     <div class="profile-section">
-      <img
-        [src]="hostProfileImage"
-        class="profile-img"
-        alt="Host"
-        loading="lazy"
-      />
+      <!-- Back Button for Mobile -->
+      <button class="back-btn d-md-none me-2" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"></path>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
+      <img [src]="hostProfileImage" class="profile-img" alt="Host" loading="lazy" />
       <span class="host-name">{{ hostName }}</span>
     </div>
   </div>
 
   <!-- Messages -->
-  <cdk-virtual-scroll-viewport
-    #chatContainer
-    itemSize="50"
-    class="chat-messages"
-  >
+  <cdk-virtual-scroll-viewport #chatContainer itemSize="50" class="chat-messages">
     <!-- Loading indicator for older messages -->
     <div *ngIf="isLoadingOlderMessages" class="loading-older-messages">
       <div class="loading-dots">
@@ -36,12 +36,10 @@
       </div>
       <span class="loading-text">{{
         "CHAT.LOADING_MESSAGES" | translate
-      }}</span>
+        }}</span>
     </div>
 
-    <ng-container
-      *cdkVirtualFor="let item of chatItems; let i = index; trackBy: trackById"
-    >
+    <ng-container *cdkVirtualFor="let item of chatItems; let i = index; trackBy: trackById">
       <!-- Date separator -->
       <div *ngIf="item.type === 'date'" class="date-separator">
         <span class="date-label">{{ item.label }} </span>
@@ -52,82 +50,52 @@
         <span>
           {{ item.content }}
         </span>
-        <span
-          style="color: #008489; text-decoration: underline; cursor: pointer"
-        >
+        <span style="color: #008489; text-decoration: underline; cursor: pointer">
           {{ item.action }}
         </span>
       </div>
 
       <!-- Message -->
-      <div
-        *ngIf="item.type === 'message'"
-        [ngClass]="{
+      <div *ngIf="item.type === 'message'" [ngClass]="{
           'message-right': item.isCurrentUser,
           'message-left': !item.isCurrentUser
-        }"
-      >
+        }">
         <!-- Host info (only for host messages) -->
-        <div *ngIf="!item.isCurrentUser" class="host-info">
-          <img
-            [src]="hostProfileImage"
-            class="profile-img"
-            alt="Host"
-            style="width: 24px; height: 24px"
-            loading="lazy"
-          />
+        <div *ngIf="!item.isCurrentUser" class="host-info px-3 md:px-2">
+          <img [src]="hostProfileImage" class="profile-img" alt="Host" style="width: 24px; height: 24px"
+            loading="lazy" />
           <span class="host-label">{{ hostName }}</span>
           <span class="timestamp">{{ item.timestamp }}</span>
         </div>
 
         <!-- Message bubble -->
-        <div
-          class="message-bubble"
-          [ngClass]="{
+        <div class="message-bubble" [ngClass]="{
             'current-user-bubble': item.isCurrentUser,
             'other-person-bubble': !item.isCurrentUser
-          }"
-        >
+          }">
           <span [innerHTML]="item.content"></span>
 
           <!-- Emoji button -->
-          <button
-            class="emoji-button"
-            (click)="toggleEmojiPicker(i, $event)"
-            type="button"
-            [ngStyle]="
+          <button class="emoji-button" (click)="toggleEmojiPicker(i, $event)" type="button" [ngStyle]="
               !item.isCurrentUser ? { left: '105%' } : { right: '105%' }
-            "
-          >
+            ">
             😊
 
             <!-- Emoji picker -->
-            <div
-              *ngIf="showEmojiPicker === i"
-              class="emoji-picker"
-              (click)="$event.stopPropagation()"
-              [ngStyle]="
+            <div *ngIf="showEmojiPicker === i" class="emoji-picker" (click)="$event.stopPropagation()" [ngStyle]="
                 !item.isCurrentUser ? { left: '110%' } : { right: '110%' }
-              "
-            >
-              <button
-                *ngFor="let emoji of emojiOptions"
-                class="emoji-option"
-                (click)="addReaction(i, emoji, $event)"
-                type="button"
-              >
+              ">
+              <button *ngFor="let emoji of emojiOptions" class="emoji-option" (click)="addReaction(i, emoji, $event)"
+                type="button">
                 {{ emoji }}
               </button>
             </div>
           </button>
 
           <!-- Reaction -->
-          <div
-            *ngIf="item.reaction"
-            class="message-reaction"
+          <div *ngIf="item.reaction" class="message-reaction"
             [ngStyle]="!item.isCurrentUser ? { right: '8px' } : { left: '8px' }"
-            [ngClass]="!item.isCurrentUser ? 'reaction-host' : 'reaction-user'"
-          >
+            [ngClass]="!item.isCurrentUser ? 'reaction-host' : 'reaction-user'">
             {{ item.reaction }}
           </div>
         </div>
@@ -138,13 +106,8 @@
           <span *ngIf="item.readBy" class="read-status">
             {{ "CHAT.READ_BY" | translate : { name: item.readBy } }}
           </span>
-          <img
-            *ngIf="item.readBy && i === getLastReadMessageIndex()"
-            [src]="hostProfileImage"
-            class="read-avatar"
-            alt="Read by {{ item.readBy }}"
-            loading="lazy"
-          />
+          <img *ngIf="item.readBy && i === getLastReadMessageIndex()" [src]="hostProfileImage" class="read-avatar"
+            alt="Read by {{ item.readBy }}" loading="lazy" />
         </div>
       </div>
     </ng-container>
@@ -153,39 +116,19 @@
   <!-- Input area -->
   <div class="chat-input-area">
     <div class="input-container">
-      <input
-        type="text"
-        class="message-input"
-        [placeholder]="'CHAT.WRITE_MESSAGE' | translate"
-        [(ngModel)]="messageInput"
-        (keypress)="onKeyPress($event)"
-      />
-      <button
-        class="send-button"
-        [disabled]="isSendDisabled"
-        (click)="sendMessage()"
-        type="button"
-      >
+      <input type="text" class="message-input" [placeholder]="'CHAT.WRITE_MESSAGE' | translate"
+        [(ngModel)]="messageInput" (keypress)="onKeyPress($event)" />
+      <button class="send-button" [disabled]="isSendDisabled" (click)="sendMessage()" type="button">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M2 8L14 2L10 8L14 14L2 8Z"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M2 8L14 2L10 8L14 14L2 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
     </div>
     <div class="response-time">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
         <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1" />
-        <path
-          d="M6 3V6L8 8"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-        />
+        <path d="M6 3V6L8 8" stroke="currentColor" stroke-width="1" stroke-linecap="round" />
       </svg>
       <span>
         {{ "CHAT.RESPONSE_TIME" | translate : { time: "11 hours" } }}

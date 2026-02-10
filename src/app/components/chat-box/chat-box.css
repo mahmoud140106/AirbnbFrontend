@@ -1,7 +1,7 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 87vh;
+  height: 100%;
   background-color: #ffffff;
   border: 1px solid #e5e5e5;
   overflow: hidden;
@@ -10,8 +10,9 @@
 
 .chat-messages {
   flex: 1;
-  height: calc(100vh - 180px);
   background-color: #f8f9fa;
+  overflow-y: auto;
+  padding: 16px 24px; /* Increased horizontal padding */
 }
 
 cdk-virtual-scroll-viewport {
@@ -23,7 +24,7 @@ cdk-virtual-scroll-viewport {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 24px; /* Matching horizontal padding */
 }
 
 /* Header */
@@ -31,6 +32,12 @@ cdk-virtual-scroll-viewport {
   padding: 16px 20px;
   border-bottom: 1px solid #e5e5e5;
   background-color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-header:hover {
+  background-color: #f9f9f9;
 }
 
 .profile-section {
@@ -52,13 +59,30 @@ cdk-virtual-scroll-viewport {
   color: #222222;
 }
 
-/* Messages area */
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 20px;
-  background-color: #ffffff;
+.back-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  margin-left: -8px;
+  cursor: pointer;
+  color: #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
+
+.back-btn:hover {
+  background-color: #f7f7f7;
+}
+
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Messages area - merged with top block */
 
 /* Loading indicators */
 .loading-older-messages {

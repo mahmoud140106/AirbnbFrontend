@@ -3,6 +3,7 @@
   padding: 0 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
+  padding-bottom: 2rem;
 }
 
 .header {
@@ -53,6 +54,12 @@ swiper-container {
   padding: 0rem 0 1rem 0 !important;
   width: 100%;
   overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+swiper-container:active {
+  cursor: grabbing;
 }
 
 swiper-slide {
@@ -62,27 +69,23 @@ swiper-slide {
   height: auto;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .properties-container {
     padding: 0 16px;
   }
 
   .title {
-    font-size: 20px;
+    font-size: 18px;
+    padding-left: 0;
   }
 
   .navigation-arrows {
     display: none;
   }
-
-  swiper-slide {
-    width: 240px !important;
-  }
 }
 
 @media (max-width: 480px) {
-  swiper-slide {
-    width: 200px !important;
+  .properties-container {
+    padding: 0 12px;
   }
 }

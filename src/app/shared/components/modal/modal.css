@@ -29,17 +29,22 @@
 }
 .modal-content {
   background-color: var(--bg-color);
-  min-width: 400px;
-  max-width: 10000px;
-  /* min-height: 200px; */
+  width: 95%;
+  min-width: 300px;
+  max-width: 550px;
   margin: auto;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-    /* aspect-ratio: 1 / 1;  */
+}
 
-
+@media (max-width: 576px) {
+  .modal-content {
+    min-width: unset;
+    width: 95vw;
+    max-height: 90vh;
+  }
 }
 
 .modal-header,

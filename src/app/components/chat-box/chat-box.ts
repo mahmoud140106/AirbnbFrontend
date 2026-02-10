@@ -5,6 +5,8 @@ import {
   ViewChild,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   OnDestroy,
   SimpleChanges,
   ChangeDetectorRef,
@@ -44,12 +46,14 @@ interface ChatItem {
   selector: 'app-chat-box',
   templateUrl: './chat-box.html',
   styleUrls: ['./chat-box.css'],
-  imports: [CommonModule, FormsModule, ScrollingModule,TranslateModule],
+  imports: [CommonModule, FormsModule, ScrollingModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatBoxComponent implements OnInit, OnDestroy {
   @Input() selectedChatSession: ChatSessionDto | null = null;
   @Input() initialMessages: MessageDto[] = [];
+  @Output() backToList = new EventEmitter<void>();
+  @Output() toggleDetails = new EventEmitter<void>();
 
   private currentUserId: string | null = null;
 
@@ -85,7 +89,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
     private signalRService: SignalRService,
     private cdr: ChangeDetectorRef,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserId = this.authService.userId;
@@ -121,8 +125,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
           console.log('New message received via SignalR:', newMessage);
           // this.messages.push(newMessage);
           let targetLang = this.chatService._targetLang$.getValue()
-          if(targetLang == "" || targetLang == null || targetLang == "null")
-          {
+          if (targetLang == "" || targetLang == null || targetLang == "null") {
             this.messages.push(newMessage)
             this.processChatItems();
             this.scrollToBottom();
@@ -131,20 +134,20 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
           }
 
           this.chatService
-                .translateMessage(newMessage.messageText,targetLang)
-                .subscribe({
-                  next:(res)=>{
-                      console.log("Translated  message:",res)
-                      newMessage.messageText = res?.translated_texts.length>0? res.translated_texts[0] : ""
-                      this.messages.push(newMessage);
-                      this.processChatItems();
-                      this.scrollToBottom();
-                      this.cdr.detectChanges();
-                  },
-                  error:(err)=>{
-                      console.error("error translating the message",err)
-                  }
-                })
+            .translateMessage(newMessage.messageText, targetLang)
+            .subscribe({
+              next: (res) => {
+                console.log("Translated  message:", res)
+                newMessage.messageText = res?.translated_texts.length > 0 ? res.translated_texts[0] : ""
+                this.messages.push(newMessage);
+                this.processChatItems();
+                this.scrollToBottom();
+                this.cdr.detectChanges();
+              },
+              error: (err) => {
+                console.error("error translating the message", err)
+              }
+            })
 
         }
       });
@@ -463,7 +466,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
           this.messageInput = '';
           this.scrollToBottom();
           this.isSending = false;
-        this.cdr.detectChanges();
+          this.cdr.detectChanges();
 
         },
         error: (error) => {
@@ -542,5 +545,13 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
   get chatSessionInfo(): string {
     if (!this.selectedChatSession) return '';
     return `${this.selectedChatSession.propertyTitle} - ${this.selectedChatSession.hostName}`;
+  }
+
+  goBack(): void {
+    this.backToList.emit();
+  }
+
+  onHeaderClick(): void {
+    this.toggleDetails.emit();
   }
 }

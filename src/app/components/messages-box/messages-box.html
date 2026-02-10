@@ -12,60 +12,35 @@
   </div>
   <!-- Filter Buttons -->
   <div class="d-flex gap-2 mb-4" *ngIf="!error">
-    <button
-      class="filter-btn"
-      [class.active]="activeFilter === 'all'"
-      (click)="setActiveFilter('all')"
-    >
+    <button class="filter-btn" [class.active]="activeFilter === 'all'" (click)="setActiveFilter('all')">
       {{ "MESSAGES.FILTER.ALL" | translate }}
     </button>
-    <button
-      class="filter-btn"
-      [class.active]="activeFilter === 'unread'"
-      (click)="setActiveFilter('unread')"
-    >
+    <button class="filter-btn" [class.active]="activeFilter === 'unread'" (click)="setActiveFilter('unread')">
       <!-- Unread ({{ getUnreadCount() }}) -->
       {{ "MESSAGES.FILTER.UNREAD" | translate : { count: getUnreadCount() } }}
     </button>
     <!-- Language Settings -->
     <div class="language-settings">
       <button class="settings-btn" (click)="toggleLanguageSettings()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"></circle>
           <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-          ></path>
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
         </svg>
       </button>
       <div class="language-dropdown" *ngIf="showLanguageSettings">
         <div class="language-dropdown-content">
           <label for="languageSearch">{{
             "MESSAGES.LANGUAGE.LABEL" | translate
-          }}</label>
+            }}</label>
           <div class="search-container">
-            <input
-              type="text"
-              id="languageSearch"
-              [(ngModel)]="searchQuery"
-              placeholder="{{ 'MESSAGES.LANGUAGE.PLACEHOLDER' | translate }}"
-              class="form-control mb-2"
-            />
+            <input type="text" id="languageSearch" [(ngModel)]="searchQuery"
+              placeholder="{{ 'MESSAGES.LANGUAGE.PLACEHOLDER' | translate }}" class="form-control mb-2" />
           </div>
-          <select
-            id="languageSelect"
-            [(ngModel)]="selectedLanguage"
-            (change)="onLanguageChange()"
-            class="form-select"
-            size="10"
-          >
+          <select id="languageSelect" [(ngModel)]="selectedLanguage" (change)="onLanguageChange()" class="form-select"
+            size="10">
             <option [value]="null">
               {{ "MESSAGES.LANGUAGE.ORIGINAL" | translate }}
             </option>
@@ -95,45 +70,32 @@
   </div>
 
   <!-- Messages List Container with Scroll -->
-  <div
-    *ngIf="getFilteredMessages().length > 0 && !isLoading && !error"
-    class="messages-scroll-container"
-    #messagesContainer
-    (scroll)="onScroll($event)"
-  >
-    <div
-      *ngFor="let thread of getFilteredMessages(); trackBy: trackByThreadId"
-      class="message-thread mb-3"
-      [class.unread]="thread.isUnread"
-      [class.selected]="isThreadSelected(thread.id)"
-      (click)="openMessage(thread)"
-    >
-      <div class="d-flex align-items-start">
-        <img
-          [src]="thread.profileImage"
-          class="profile-img me-3"
-          [alt]="thread.name"
-          loading="lazy"
-          onerror="this.src='https://pngpix.com/images/file/placeholder-profile-icon-20tehfawxt5eihco.jpg'"
-        />
-        <div class="flex-grow-1">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="message-name" [title]="thread.name">
+  <div *ngIf="getFilteredMessages().length > 0 && !isLoading && !error" class="messages-scroll-container"
+    #messagesContainer (scroll)="onScroll($event)">
+    <div *ngFor="let thread of getFilteredMessages(); trackBy: trackByThreadId" class="message-thread mb-3"
+      [class.unread]="thread.isUnread" [class.selected]="isThreadSelected(thread.id)" (click)="openMessage(thread)">
+      <div class="d-flex align-items-center">
+        <div class="position-relative">
+          <img [src]="thread.profileImage" class="profile-img me-3 " [alt]="thread.name" loading="lazy"
+            onerror="this.src='https://pngpix.com/images/file/placeholder-profile-icon-20tehfawxt5eihco.jpg'" />
+        </div>
+        <div class="flex-grow-1 min-width-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="message-name text-truncate" [title]="thread.name">
               {{ thread.name }}
-              <span *ngIf="thread.isUnread" class="unread-indicator"></span>
             </div>
-            <div class="message-time">{{ thread.time }}</div>
+            <div class="message-time" [class.unread-time]="thread.isUnread">
+              {{ thread.time }}
+            </div>
           </div>
-          <div
-            class="message-preview"
-            [innerHTML]="thread.preview"
-            [title]="thread.preview"
-          ></div>
-          <div
-            class="message-details"
-            *ngIf="thread.tripDetails"
-            [title]="thread.tripDetails"
-          >
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <div class="message-preview text-truncate" [innerHTML]="thread.preview" [title]="thread.preview"></div>
+            <div *ngIf="thread.isUnread && thread.unreadCount" class="whatsapp-badge">
+              {{ thread.unreadCount }}
+            </div>
+          </div>
+          <div class="message-details text-truncate small text-muted" *ngIf="thread.tripDetails"
+            [title]="thread.tripDetails">
             {{ thread.tripDetails }}
           </div>
         </div>
@@ -146,55 +108,44 @@
         <span class="visually-hidden">Loading more...</span>
       </div>
       <small class="d-block mt-1 text-muted">
-        {{ "MESSAGES.LOADING_MORE" | translate }}</small
-      >
+        {{ "MESSAGES.LOADING_MORE" | translate }}</small>
     </div>
 
     <!-- End of data indicator -->
-    <div
-      *ngIf="!hasMoreData && messageThreads.length > 0 && !isLoadingMore"
-      class="text-center py-3"
-    >
+    <div *ngIf="!hasMoreData && messageThreads.length > 0 && !isLoadingMore" class="text-center py-3">
       <small class="text-muted">
         <i class="bi bi-check-circle me-1"></i>
         {{
-          "MESSAGES.ALL_LOADED" | translate : { count: messageThreads.length }
+        "MESSAGES.ALL_LOADED" | translate : { count: messageThreads.length }
         }}
       </small>
     </div>
 
     <!-- Manual load more button (fallback) -->
     <div *ngIf="hasMoreData && !isLoadingMore" class="text-center py-3">
-      <button
-        class="btn btn-outline-primary btn-sm"
-        (click)="loadMoreManually()"
-        [disabled]="isLoadingMore"
-      >
+      <button class="btn btn-outline-primary btn-sm" (click)="loadMoreManually()" [disabled]="isLoadingMore">
         {{ "MESSAGES.LOAD_MORE_BTN" | translate }}
       </button>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div
-    *ngIf="getFilteredMessages().length === 0 && !isLoading && !error"
-    class="text-center mt-5 pt-5"
-  >
+  <div *ngIf="getFilteredMessages().length === 0 && !isLoading && !error" class="text-center mt-5 pt-5">
     <div class="placeholder-icon mb-3">
       <i class="bi bi-chat-dots"></i>
     </div>
     <div class="empty-title mb-2">
       {{
-        activeFilter === "unread"
-          ? ("MESSAGES.EMPTY_STATE.UNREAD_TITLE" | translate)
-          : ("MESSAGES.EMPTY_STATE.DEFAULT_TITLE" | translate)
+      activeFilter === "unread"
+      ? ("MESSAGES.EMPTY_STATE.UNREAD_TITLE" | translate)
+      : ("MESSAGES.EMPTY_STATE.DEFAULT_TITLE" | translate)
       }}
     </div>
     <div class="empty-subtitle">
       {{
-        activeFilter === "unread"
-          ? ("MESSAGES.EMPTY_STATE.UNREAD_SUB" | translate)
-          : ("MESSAGES.EMPTY_STATE.DEFAULT_SUB" | translate)
+      activeFilter === "unread"
+      ? ("MESSAGES.EMPTY_STATE.UNREAD_SUB" | translate)
+      : ("MESSAGES.EMPTY_STATE.DEFAULT_SUB" | translate)
       }}
     </div>
   </div>

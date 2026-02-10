@@ -21,9 +21,10 @@ export class Messages implements OnInit, OnDestroy {
   initialMessages: MessageDto[] = [];
   ReservationWithProperty: any | null = null;
   isLoadingChat: boolean = false;
-  currentOpenChatId?:string
+  currentOpenChatId?: string
   isHost: boolean = false;
   hasLangChanged = false;
+  showReservationDetails: boolean = false;
 
 
   private currentUserId: string | null = null;
@@ -33,7 +34,7 @@ export class Messages implements OnInit, OnDestroy {
     private signalRService: SignalRService,
     private messageService: ChatService, private authService: AuthService,
     private cdr: ChangeDetectorRef
-) { }
+  ) { }
 
   ngOnInit(): void {
     this.startSignalRConnection();
@@ -54,7 +55,7 @@ export class Messages implements OnInit, OnDestroy {
   }
 
   onChatSessionSelected(session: ChatSessionDto): void {
-    if(this.currentOpenChatId == session.id && !this.hasLangChanged)
+    if (this.currentOpenChatId == session.id && !this.hasLangChanged)
       return
     this.currentOpenChatId = session.id
     if (session.hostId === this.currentUserId) {
@@ -62,6 +63,7 @@ export class Messages implements OnInit, OnDestroy {
     } else {
       this.isHost = false;
     }
+    this.showReservationDetails = false; // Reset on session change
     console.log("isHost", this.isHost)
 
     this.isLoadingChat = true;
@@ -86,17 +88,17 @@ export class Messages implements OnInit, OnDestroy {
           console.log("reserveRequest", reserveRequest)
           console.log("res", res.data)
           // Add slight delay for better UX
-         
+
           if (res.data) {
             // Update the session immediately to show loading state
             const end = performance.now();
-      
+
             this.selectedChatSession = res.data.chatSession;
-            
+
             // Load messages and other data
             this.initialMessages = res.data.messages || [];
             this.ReservationWithProperty = res.data;
-                  
+
             // Hide loading state after a small delay for smooth transition
             setTimeout(() => {
               this.isLoadingChat = false;
@@ -122,16 +124,16 @@ export class Messages implements OnInit, OnDestroy {
           if (res.data) {
             // Update the session immediately to show loading state
             this.selectedChatSession = res.data.chatSession;
-            
+
             // Load messages and other data
             this.initialMessages = res.data.messages || [];
             this.ReservationWithProperty = res.data;
-                        
+
             // Hide loading state after a small delay for smooth transition
             setTimeout(() => {
               this.isLoadingChat = false;
               this.cdr.detectChanges()
-              
+
             }, 200);
           } else {
             this.isLoadingChat = false;
@@ -155,9 +157,21 @@ export class Messages implements OnInit, OnDestroy {
   get showPlaceholder(): boolean {
     return !this.isLoadingChat && !this.hasChatSelected;
   }
-  onLangChange(){
+  onLangChange() {
     this.hasLangChanged = true
-    if(this.selectedChatSession)
+    if (this.selectedChatSession)
       this.onChatSessionSelected(this.selectedChatSession)
+  }
+
+  onBackToList(): void {
+    this.selectedChatSession = null;
+    this.currentOpenChatId = undefined;
+    this.showReservationDetails = false;
+    this.cdr.detectChanges();
+  }
+
+  toggleReservation(): void {
+    this.showReservationDetails = !this.showReservationDetails;
+    this.cdr.detectChanges();
   }
 }

@@ -1,35 +1,50 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-3 p-0">
-      <app-messages-box
-        (chatSessionSelected)="onChatSessionSelected($event)"
-        (langChange)="onLangChange()"
-
-      ></app-messages-box>
+<div class="container-fluid messages-page">
+  <div class="row h-100">
+    <!-- Chat List Box -->
+    <div class="col-md-3 p-0 h-100 border-end" [ngClass]="{'d-none d-md-block': hasChatSelected || isLoadingChat}">
+      <app-messages-box (chatSessionSelected)="onChatSessionSelected($event)"
+        (langChange)="onLangChange()"></app-messages-box>
     </div>
 
-    <!-- Show loading state -->
-    <div class="col-md-9 p-0" *ngIf="isLoadingChat">
-      <app-chat-loading></app-chat-loading>
-    </div>
-
-    <div class="col-md-9 p-0" *ngIf="!hasChatSelected">
-      <app-chat-placeholder></app-chat-placeholder>
-    </div>
-
-    <ng-container *ngIf="hasChatSelected">
-      <div  [ngClass]="false ? 'col-md-9' : 'col-md-6'" class="p-0">
-        <app-chat-box
-          [selectedChatSession]="selectedChatSession"
-          [initialMessages]="initialMessages"
-        ></app-chat-box>
+    <!-- Right Side (Placeholder or Loading or Chat) -->
+    <div class="col-md-9 p-0 h-100" [ngClass]="{'d-none d-md-block': !hasChatSelected && !isLoadingChat}">
+      <!-- Show loading state -->
+      <div class="h-100" *ngIf="isLoadingChat">
+        <app-chat-loading></app-chat-loading>
       </div>
-      <div class="col-md-3 p-0" >
-        <app-reservation-box
-          [selectedChatSession]="selectedChatSession"
-          [ReservationWithProperty]="ReservationWithProperty"
-        ></app-reservation-box>
+
+      <!-- Placeholder (only on desktop) -->
+      <div class="h-100 d-none d-md-block" *ngIf="!hasChatSelected && !isLoadingChat">
+        <app-chat-placeholder></app-chat-placeholder>
       </div>
-    </ng-container>
+
+      <!-- Chat View -->
+      <div class="row m-0 h-100 position-relative" *ngIf="hasChatSelected && !isLoadingChat">
+        <div [ngClass]="(ReservationWithProperty && showReservationDetails) ? 'col-md-8' : 'col-md-12'"
+          class="p-0 h-100 chat-main-col">
+          <app-chat-box [selectedChatSession]="selectedChatSession" [initialMessages]="initialMessages"
+            (backToList)="onBackToList()" (toggleDetails)="toggleReservation()"></app-chat-box>
+        </div>
+
+        <!-- Reservation Details (Always sidebar on desktop, optional toggle) -->
+        <div class="col-md-4 p-0 border-start h-100 scrollable-reservation reservation-sidebar"
+          [ngClass]="{'d-none': !showReservationDetails, 'mobile-overlay': true}" *ngIf="ReservationWithProperty">
+          <!-- Header for Mobile Overlay -->
+          <div class="d-md-none p-3 border-bottom d-flex align-items-center bg-white sticky-top">
+            <button class="back-btn me-2" (click)="toggleReservation()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <h5 class="m-0 fw-bold">تفاصيل الحجز</h5>
+          </div>
+
+          <app-reservation-box [selectedChatSession]="selectedChatSession"
+            [ReservationWithProperty]="ReservationWithProperty"></app-reservation-box>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
