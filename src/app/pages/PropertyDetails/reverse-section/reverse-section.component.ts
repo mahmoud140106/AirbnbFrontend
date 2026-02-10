@@ -186,8 +186,12 @@ export class ReverseSectionComponent implements OnInit, OnChanges {
   specialPriceFromAvailable !: any;
 
 
+  isMobile: boolean = false;
+
   ngOnInit() {
+    this.updateIsMobile();
     this.commonService.clear$.subscribe(() => {
+
       this.clear();
     });
     console.log('from ReserveOnInit', this.checkIn, this.checkOut);
@@ -294,8 +298,14 @@ export class ReverseSectionComponent implements OnInit, OnChanges {
   }
   @HostListener('window:resize', [])
   onResize() {
+    this.updateIsMobile();
     this.updateDisplayMonths();
   }
+
+  updateIsMobile() {
+    this.isMobile = window.innerWidth < 768;
+  }
+
 
   isInvalidDate = (date: dayjs.Dayjs): boolean => {
     // console.log("selected start date is ", this.selected.startDate)

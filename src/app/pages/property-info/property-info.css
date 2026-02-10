@@ -1,38 +1,60 @@
 
 
-html {
-  /* overflow-x: hidden; */
-}
+/* html {
+  overflow-x: hidden;
+} */
+
 
 .sticky-box {
   position: sticky;
-  top: 100px; /* distance from top before it sticks */
+  top: 100px;
   z-index: 100;
 }
+
+@media (max-width: 768px) {
+  .sticky-box {
+    position: static !important;
+    width: 100%;
+  }
+}
+
 
 /* * {
   outline: 1px solid red;
 } */
 
 /* styles.css or component.scss */
-body {
-  /* overflow-x: hidden; */
-}
+/* body {
+  overflow-x: hidden;
+} */
 :host {
   display: block;
-  /* overflow-x: hidden; */
 }
 
+
 .property-details-box {
-  /* border: 2px solid lightblue; */
   border-radius: 10px;
-  padding: 0px;
+  padding: 0;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
-  max-width: 1200px;
-
+  max-width: 1280px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 40px;
 }
+
+@media (max-width: 991px) {
+  .property-details-box {
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+
 .bookinCalender{
   max-width: 1200px;
 
@@ -59,9 +81,23 @@ body {
   white-space: nowrap;
 }
 
-.bookinCalender{
+.bookinCalender {
   z-index: 1000 !important;
+  width: 100%;
+  max-width: 400px;
 }
+
+@media (max-width: 991px) {
+  .bookinCalender {
+    max-width: 100%;
+    order: 2; /* Put it after main content on mobile if needed, or before */
+  }
+  
+  .sticky-box {
+    position: static !important;
+  }
+}
+
 
 
 /* Make sure the sticky container works */

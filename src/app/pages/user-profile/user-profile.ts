@@ -82,8 +82,9 @@ export class UserProfile implements OnInit, OnDestroy, OnChanges {
 
   private currentScrollPosition = 0;
   private listingsScrollPosition = 0;
-  private readonly scrollStep = 292;
-  private readonly listingsScrollStep = 252;
+  private readonly scrollStep = 306;
+  private readonly listingsScrollStep = 266;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -288,22 +289,17 @@ export class UserProfile implements OnInit, OnDestroy, OnChanges {
   scrollReviews(direction: 'left' | 'right'): void {
     if (!this.reviewsContainer) return;
     const container = this.reviewsContainer.nativeElement;
-    const maxScroll = container.scrollWidth - container.parentElement.clientWidth;
-    this.currentScrollPosition = direction === 'right'
-      ? Math.min(this.currentScrollPosition + this.scrollStep, maxScroll)
-      : Math.max(this.currentScrollPosition - this.scrollStep, 0);
-    container.style.transform = `translateX(-${this.currentScrollPosition}px)`;
+    const scrollAmount = direction === 'right' ? this.scrollStep : -this.scrollStep;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   }
 
   scrollListings(direction: 'left' | 'right'): void {
     if (!this.listingsContainer) return;
     const container = this.listingsContainer.nativeElement;
-    const maxScroll = container.scrollWidth - container.parentElement.clientWidth;
-    this.listingsScrollPosition = direction === 'right'
-      ? Math.min(this.listingsScrollPosition + this.listingsScrollStep, maxScroll)
-      : Math.max(this.listingsScrollPosition - this.listingsScrollStep, 0);
-    container.style.transform = `translateX(-${this.listingsScrollPosition}px)`;
+    const scrollAmount = direction === 'right' ? this.listingsScrollStep : -this.listingsScrollStep;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   }
+
 
   navigateToProperty(id: number): void {
     this.router.navigate(['/property', id]);

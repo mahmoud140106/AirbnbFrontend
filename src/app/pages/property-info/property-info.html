@@ -1,51 +1,39 @@
 <app-propertImage-galary [propertyId]="propertyId" (wishlistToggle)="onWishlistClick($event)"
   [isFavourite]="property?.isFavourite"></app-propertImage-galary>
 
-<div class="container-lg d-flex flex-column">
-  <div class="property-details-box mt-2 d-flex justify-content-center justify-content-md-between flex-wrap">
-    <div class="d-flex flex-column align-items-center">
-      <div class="col-md-12 d-flex">
+<div class="container-lg">
+  <div class="property-details-box mt-2">
+    <div class="main-content d-flex flex-column align-items-center w-100">
+      <div class="col-12 px-0">
         <!-- property info, description, amenities, etc. -->
         <app-amenities-section [propertyId]="propertyId" [property]="selectedProperty"></app-amenities-section>
       </div>
-      <!-- <app-reverse-section ></app-reverse-section> -->
-      <div class="col-md-12 d-flex justify-content-center px-0">
+      <div class="col-12 d-flex justify-content-center px-0">
         <app-BookingCalendar [propertyId]="propertyId" [checkIn]="selectedDates.start" [checkOut]="selectedDates.end"
           [dateMap]="dateMap" (datedChange)="onDateChange($event)">
         </app-BookingCalendar>
       </div>
     </div>
-    <div class="bookinCalender position-relative d-flex d-md-block" style="position: relative !important;">
-      <!-- <div class="row"> -->
-      <!-- <div class="col-md-8">
-
-        <app-BookingCalendar [propertyId]="propertyId" [checkIn]="selectedDates.start" [checkOut]="selectedDates.end"
-          (datedChange)="onDateChange($event)">
-        </app-BookingCalendar>
-
-      </div> -->
-      <div class="col-md-12 sticky-box mx-auto" style="position: sticky; top: 90px;">
+    <div class="bookinCalender">
+      <div class="sticky-box">
         <app-reverse-section [dateMap]="dateMap" [propertyId]="propertyId" [hostID]="hostID"
           [checkIn]="selectedDates.start" [checkOut]="selectedDates.end" [guests]="guestCount" [isPreview]="isPreview"
           (guestChange)="onGuestChange($event)" (dateChange)="onDateChange($event)">
         </app-reverse-section>
       </div>
-      <!-- <div class="reviewSection">
-        <app-guest-reviews [propertyId]="propertyId"></app-guest-reviews>
-      </div> -->
-
-      <!-- </div> -->
     </div>
   </div>
-
-  <div class="mapSection mt-15 mx-auto col-12">
-    <app-mapLocation [propertyId]="propertyId"></app-mapLocation>
-  </div>
-
-  <div class="d-flex justify-content-end">
-    <p class="border-1 px-2 py-1">Report violation</p>
-  </div>
 </div>
+
+
+<div class="mapSection mt-15 mx-auto col-12">
+  <app-mapLocation [propertyId]="propertyId"></app-mapLocation>
+</div>
+
+<div class="d-flex justify-content-end">
+  <p class="border-1 px-2 py-1">Report violation</p>
+</div>
+
 
 <div class="property-container">
   <!-- Loading State -->

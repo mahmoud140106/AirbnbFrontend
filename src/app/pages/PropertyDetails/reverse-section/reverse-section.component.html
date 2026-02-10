@@ -32,9 +32,10 @@
       </div>
       <input #picker [(ngModel)]="selected" [isInvalidDate]="isInvalidDate"
         class="custom-date-input text-center fs-6 mx-auto" ngxDaterangepickerMd [useMap]="false"
-        [linkedCalendars]="true" [showClearButton]="false" [alwaysShowCalendars]="true" [ranges]="ranges"
+        [linkedCalendars]="!isMobile" [showClearButton]="false" [alwaysShowCalendars]="true" [ranges]="ranges"
         [locale]="locale" [autoApply]="true" [showCancel]="false" [showDropdowns]="false" [locale]="locale"
         (datesUpdated)="onDatesChanged($event)" (startDateChanged)="onStartDateChange($event)" />
+
     </div>
 
     <!-- <input type="date"     > -->

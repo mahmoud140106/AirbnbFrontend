@@ -74,13 +74,25 @@ swiper-slide {
     padding: 0 16px;
   }
 
+  .header {
+    margin-bottom: 12px;
+  }
+
   .title {
-    font-size: 18px;
+    font-size: 1.25rem;
     padding-left: 0;
   }
 
   .navigation-arrows {
     display: none;
+  }
+
+  swiper-container {
+    padding: 0 0 2rem 0 !important;
+  }
+  
+  swiper-slide {
+    width: auto !important;
   }
 }
 
@@ -88,4 +100,9 @@ swiper-slide {
   .properties-container {
     padding: 0 12px;
   }
+  
+  .title {
+    font-size: 1.1rem;
+  }
 }
+

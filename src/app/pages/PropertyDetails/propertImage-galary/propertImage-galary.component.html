@@ -1,8 +1,8 @@
 <!-- <h1 class="first">{{ Property?.title }}</h1> -->
 
-<div class="section">
-  <div class="property-header">
-    <h1 class="property-title">{{ Property?.title }}</h1>
+<div class="section ">
+  <div class="property-header mx-4 md:mx-0">
+    <h1 class="property-title mt-2">{{ Property?.title }}</h1>
 
     <div class="property-actions">
       <button class="action-btn" (click)="onShare()">
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <div class="property-gallery" *ngIf="images?.length">
+  <div class="property-gallery " *ngIf="images?.length">
     <!-- Large left image -->
     <div class="main-image">
       <!-- <img [src]="images[0]" alt="Main Image" /> -->

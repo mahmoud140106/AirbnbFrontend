@@ -7,12 +7,15 @@
   max-width: 360px;
   position: relative;
   transition: top 0.3s ease;
-  /* margin-left: 10px; */
-  position: sticky;
-  /* top: 100px;  */
-
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
+
+@media (max-width: 768px) {
+  .reserve-box {
+    margin: 0 auto;
+  }
+}
+
 
 .guest-limit-note {
   color: green;
@@ -43,6 +46,8 @@
   display: flex;
   justify-content: space-between;
   gap: 5px;
+  position: relative; /* CRITICAL for absolute children positioning */
+
 
   label {
     flex: 1;
@@ -83,25 +88,29 @@
     opacity: 0.6;
   }
 }
-.check-btn:hover {
-  /* opacity: 0.9;
-  background-color: #dd5e3b; */
-}
+/* .check-btn:hover {
+} */
+
 
 /* Rare Find Badge */
 .rare-find-badge {
   background: #ffffff;
-
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-
-  width: 360px;
-
+  width: 100%;
+  max-width: 360px;
   border-radius: 12px;
   padding: 12px;
-  /* margin-left: 10px; */
   text-align: center;
-  margin-right: 17px;
+  margin-bottom: 16px;
 }
+
+@media (max-width: 768px) {
+  .rare-find-badge {
+    margin: 0 auto 16px auto;
+  }
+}
+
+
 
 .rare-find-icon {
   font-size: 20px;
@@ -299,10 +308,10 @@
   font-weight: bolder;
   z-index: 1000 !important;
 }
-.left ::ng-deep .md-drppicker .calendar {
+.leftsection ::ng-deep .md-drppicker .calendar {
   min-width: 45% !important;
-  /* border-width: 1px; */
 }
+
 
 /* Calendar Container Styles */
 .airbnb-calendar-container {
@@ -431,20 +440,109 @@
 
 .custom-date-input {
   padding: 10px 15px;
-  border: 2px solid #007bff;
-  border-radius: 6px;
+  border: 1px solid #717171;
+  border-radius: 8px;
   font-size: 14px;
-  width: 250px;
+  width: 100%;
+  max-width: 280px;
   cursor: pointer;
+  box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+  .custom-date-input {
+    max-width: 100%;
+  }
+}
+
 .leftsection ::ng-deep .md-drppicker {
   background-color: rgb(255, 255, 255) !important;
-  border-width: 1px;
-  left: -80% !important; 
-  bottom: -10% !important;
+  border: 1px solid #ddd !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 100% !important; /* Position it below the input */
+  margin-top: 8px;
   position: absolute;
   z-index: 10000000 !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
 }
+
+.leftsection ::ng-deep .md-drppicker.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .leftsection ::ng-deep .md-drppicker {
+    position: absolute !important;
+    top: 100% !important; /* This will now be relative to .date-picker on mobile */
+    left: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-width: unset !important;
+    padding: 10px !important;
+    background-color: white !important;
+    z-index: 20000000 !important;
+    display: block !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+    border-radius: 12px !important;
+    margin-top: 10px !important;
+  }
+
+  /* Hide the second calendar */
+  .leftsection ::ng-deep .md-drppicker .drp-calendar.right,
+  .leftsection ::ng-deep .md-drppicker .calendar.right {
+    display: none !important;
+  }
+
+  /* Expand first calendar */
+  .leftsection ::ng-deep .md-drppicker .drp-calendar.left,
+  .leftsection ::ng-deep .md-drppicker .calendar.left {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+  
+  .leftsection ::ng-deep .md-drppicker .calendar-table {
+    gap: 0 !important;
+  }
+
+  .leftsection ::ng-deep .md-drppicker .calendar-table td, 
+  .leftsection ::ng-deep .md-drppicker .calendar-table th {
+    width: 14.28% !important;
+    height: 40px !important;
+    line-height: 40px !important;
+  }
+
+  /* Ensure the header displays its content properly */
+  .leftsection ::ng-deep .md-drppicker .calendar-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Arrows styling to ensure visibility */
+  .leftsection ::ng-deep .md-drppicker .prev span,
+  .leftsection ::ng-deep .md-drppicker .next span {
+    border-width: 0 2px 2px 0 !important;
+    padding: 3px !important;
+    display: inline-block !important;
+    border-color: #222 !important;
+  }
+}
+
+
+
+
+
+
+
+
+
 
 .leftsection {
   z-index: 100000;

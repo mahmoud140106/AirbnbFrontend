@@ -44,8 +44,16 @@ body {
 .guest-favorite-content {
     display: flex;
     align-items: center;
-    gap: 5px; 
+    gap: 12px;
+    flex: 1;
 }
+
+.badge-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 
 .gem-icon-wrapper {
     display: flex;
@@ -79,39 +87,41 @@ body {
 
 /* Reviews Summary Section */
 .guest-reviews-summary {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 5px; 
-    padding-left: 5px; 
-    border-left: 1px solid #ebebeb; 
-    height: 100%; 
-      flex-direction: column;
-  align-items: start; 
-  gap: 0.25rem;
-  margin-top: 2px;
+    justify-content: center;
+    gap: 4px;
+    padding-left: 20px;
+    border-left: 1px solid #ebebeb;
+    min-width: 100px;
 }
 
 .rating {
+    display: flex;
     align-items: center;
-    gap: 4px; 
+    gap: 4px;
 }
 
 .score {
-    font-size: 1.1rem; 
-    font-weight: 600;
-    color: #171717;
-    white-space: nowrap;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
 }
 
 .stars i {
-    color: #000; 
-    font-size: 0.8rem; 
+    color: #222;
+    font-size: 0.8rem;
 }
 
 .reviews-count {
-    font-size: 0.9rem; 
-    color: #717171; 
-    white-space: nowrap; 
+    font-size: 0.8rem;
+    color: #717171;
+    white-space: nowrap;
+    text-align: center;
 }
+
 
 .reviews-count .count {
     font-weight: 600; 
@@ -224,27 +234,43 @@ h2 {
     }
 
     .guest-favorite-box {
-        flex-direction: column; 
-        align-items: flex-start; 
-        gap: 12px;
-        padding: 16px;
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: space-between;
+        padding: 12px 16px;
+        min-height: auto;
     }
 
     .guest-favorite-content {
-        width: 100%; 
-        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .badge-wrapper {
+        gap: 2px;
+    }
+
+    .reviewImage {
+        width: 32px;
+        height: 32px;
+    }
+
+    .Guestfavorite {
+        font-size: 16px;
+    }
+
+    .subtitle {
+        font-size: 0.8rem !important;
+        line-height: 1.2;
     }
 
     .guest-reviews-summary {
-        width: 100%; 
-        border-left: none; 
-        border-top: 1px solid #ebebeb; 
-        padding-left: 0;
-        padding-top: 12px;
-        margin-top: 12px; 
-        justify-content: space-around; 
+        padding-left: 12px;
+        min-width: 80px;
+        border-top: none;
+        margin-top: 0;
     }
-
     .amenities-container {
         flex-direction: column;
         gap: 0; 
@@ -268,6 +294,7 @@ h2 {
         border-radius: 12px;
     }
 }
+
 
 @media (max-width: 480px) {
     .guest-favorite-box {
