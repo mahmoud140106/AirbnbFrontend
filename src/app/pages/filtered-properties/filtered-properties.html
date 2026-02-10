@@ -1,25 +1,16 @@
 <div class="properties-container container-fluid">
   <div class="properties-panel">
-    <div class="d-flex justify-content-between items-center mb-4">
-      <p class="font-semibold text-lg">
+    <div class="properties-header d-flex justify-content-between align-items-center mb-4">
+      <p class="font-semibold text-lg mb-0">
         {{ "PROPERTIES.OVER_HOMES" | translate : { count: properties.length } }}
       </p>
-      <div class="d-flex justify-content-between items-center gap-2 text-lg">
-        <img
-          alt="fees"
-          src="assets/images/fees.svg"
-          width="40"
-          height="40"
-          loading="lazy"
-        />
-        {{ "PROPERTIES.PRICES_INCLUDE_FEES" | translate }}
+      <div class="fee-notice d-flex align-items-center gap-2 text-md">
+        <img alt="fees" src="assets/images/fees.svg" width="32" height="32" loading="lazy" />
+        <span>{{ "PROPERTIES.PRICES_INCLUDE_FEES" | translate }}</span>
       </div>
     </div>
-    <div class="properties-grid" *ngIf="isLoading">
-      <div
-        class="mb-4"
-        *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
-      >
+    <div class="properties-grid" *ngIf="isInitialLoading">
+      <div class="mb-4" *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]">
         <div class="p-2 rounded">
           <div class="shimmer rounded mb-2" style="height: 180px"></div>
           <div class="shimmer-line w-75 mb-2"></div>
@@ -28,63 +19,32 @@
         </div>
       </div>
     </div>
-    <div class="properties-grid">
+    <div class="properties-grid" *ngIf="!isInitialLoading" [class.refreshing]="isLoading">
       <div *ngFor="let property of properties; trackBy: trackByPropertyId">
-        <app-slider-card
-          (cardClick)="onPropertyClick($event)"
-          (wishlistClick)="onWishlistClick($event)"
-          [imageUrl]="getPropertyImage(property)"
-          [title]="property.title"
-          [subtitle]="getLocationSubtitle(property)"
-          [price]="property.pricePerNight"
-          [rating]="property.averageRating"
-          [isFavourite]="property.isFavourite ?? false"
-          (mouseenter)="selectProperty(property)"
-          (mouseleave)="selectedProperty = null"
-          [propertyId]="property.id"
-        >
+        <app-slider-card (cardClick)="onPropertyClick($event)" (wishlistClick)="onWishlistClick($event)"
+          [imageUrl]="getPropertyImage(property)" [title]="property.title" [subtitle]="getLocationSubtitle(property)"
+          [price]="property.pricePerNight" [rating]="property.averageRating"
+          [isFavourite]="property.isFavourite ?? false" (mouseenter)="selectProperty(property)"
+          (mouseleave)="selectedProperty = null" [propertyId]="property.id">
         </app-slider-card>
       </div>
     </div>
     <div class="pagination-container" *ngIf="totalPages > 1" dir="ltr">
       <nav class="pagination">
-        <button
-          class="pagination-btn"
-          [disabled]="currentPage === 1"
-          (click)="goToPage(currentPage - 1)"
-        >
+        <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </button>
-        <button
-          *ngFor="let page of getVisiblePages()"
-          class="pagination-btn"
-          [class.active]="page === currentPage"
-          [disabled]="page === '...'"
-          (click)="page !== '...' && goToPage(+page)"
-        >
+        <button *ngFor="let page of getVisiblePages()" class="pagination-btn" [class.active]="page === currentPage"
+          [disabled]="page === '...'" (click)="page !== '...' && goToPage(+page)">
           {{ page }}
         </button>
-        <button
-          class="pagination-btn"
-          [disabled]="currentPage === totalPages"
-          (click)="goToPage(currentPage + 1)"
-        >
+        <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M9 18L15 12L9 6"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </button>
       </nav>
@@ -96,13 +56,6 @@
   </div>
 </div>
 
-<app-wish-list-modal
-  *ngIf="show"
-  [propertyId]="selectedPropertyId"
-  (close)="onClose()"
-  (finish)="onFinish($event)"
-  [show]="show"
-  [userId]="authService.userId ?? undefined"
-  class="col-12"
->
+<app-wish-list-modal *ngIf="show" [propertyId]="selectedPropertyId" (close)="onClose()" (finish)="onFinish($event)"
+  [show]="show" [userId]="authService.userId ?? undefined" class="col-12">
 </app-wish-list-modal>

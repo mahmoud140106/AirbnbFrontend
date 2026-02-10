@@ -18,6 +18,23 @@
   margin-bottom: 40px;
 }
 
+.properties-header {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.fee-notice {
+  color: #717171;
+  font-weight: 500;
+}
+
+@media (max-width: 576px) {
+  .properties-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+}
+
 .map-panel {
   width: 40%;
   height: 80vh;
@@ -239,11 +256,13 @@
 }
 
 /* Loading state for properties grid */
-.properties-grid.loading {
+.properties-grid.refreshing {
   opacity: 0.6;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  filter: blur(0.5px);
+  transition: all 0.3s ease;
 }
+
 
 /* Smooth transitions for property cards */
 .property-card {

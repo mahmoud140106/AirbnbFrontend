@@ -26,13 +26,9 @@
     <div class="header-controls">
       <!-- View Toggle -->
       <div class="view-toggle">
-        <button
-          class="view-toggle-btn"
-          (click)="toggleViewMode()"
-          [title]="
+        <button class="view-toggle-btn" (click)="toggleViewMode()" [title]="
             viewMode === 'grid' ? 'Switch to table view' : 'Switch to grid view'
-          "
-        >
+          ">
           {{ viewMode === "grid" ? "⊞" : "☰" }}
         </button>
       </div>
@@ -41,164 +37,134 @@
   </div>
 
   <!-- Properties Grid View -->
-  <div
-    *ngIf="properties.length > 0"
-    class="properties-grid"
-    [class.table-view]="viewMode === 'table'"
-  >
-    <div
-      *ngFor="let property of properties; trackBy: trackById"
-      class="property-card"
-    >
+  <div *ngIf="pagedProperties.length > 0 && viewMode === 'grid'" class="properties-grid">
+    <div *ngFor="let property of pagedProperties; trackBy: trackById" class="property-card">
       <div class="property-image-container">
         <div class="property-image">
           <ng-container *ngIf="hasValidImage(property)">
-            <img
-              [src]="getCoverImageUrl(property)"
-              [alt]="property.title"
-              loading="lazy"
-            />
-            <div class="image-placeholder" style="display: none">🏠</div>
+            <img [src]="getCoverImageUrl(property)" [alt]="property.title" loading="lazy" />
           </ng-container>
           <ng-container *ngIf="!hasValidImage(property)">
             <div class="image-placeholder">🏠</div>
           </ng-container>
         </div>
+
+        <!-- Overlaid Status Badges -->
+        <div class="property-status-overlay">
+          <span class="status-badge" [class.active]="property.isActive" [class.inactive]="!property.isActive">
+            {{ getActiveStatusLabel(property.isActive) }}
+          </span>
+          <span class="approval-status-badge" [class.pending]="property.status === 1"
+            [class.accepted]="property.status === 2" [class.rejected]="property.status === 3">
+            {{ getStatusLabel(property.status) }}
+          </span>
+        </div>
       </div>
 
       <!-- Property Content -->
       <div class="property-content">
-        <h3 class="property-title">{{ property.title }}</h3>
-        <p class="property-location">
-          Home in {{ property.city }}, {{ property.state }},
-          {{ property.country }}
-        </p>
-
-        <!-- Status Information -->
-        <div class="property-status">
-          <span
-            class="status-badge"
-            [class.active]="property.isActive"
-            [class.inactive]="!property.isActive"
-          >
-            {{ getActiveStatusLabel(property.isActive) }}
-          </span>
-          <span
-            class="approval-status-badge"
-            [class.pending]="property.status === 1"
-            [class.accepted]="property.status === 2"
-            [class.rejected]="property.status === 3"
-          >
-            {{ getStatusLabel(property.status) }}
-          </span>
+        <div class="content-main">
+          <h3 class="property-title">{{ property.title }}</h3>
+          <p class="property-location">
+            Home in {{ property.city }}, {{ property.state }}
+          </p>
         </div>
 
         <!-- Navigation Buttons -->
         <div class="property-actions">
-          <button
-            class="dark-btn edit-btn"
-            (click)="navigateToEditProperty(property.id)"
-            title="Edit Property"
-          >
-            <span class="btn-icon">✏️</span>
-            Edit Property
+          <button class="action-btn edit" (click)="navigateToEditProperty(property.id)" title="Edit">
+            ✏️ <span>Edit</span>
           </button>
-          <button
-            class="dark-btn bookings-btn"
-            (click)="navigateToPropertyBookings(property.id)"
-            title="View Bookings"
-          >
-            <span class="btn-icon">📅</span>
-            View Bookings
+          <button class="action-btn bookings" (click)="navigateToPropertyBookings(property.id)" title="Bookings">
+            📅 <span>Bookings</span>
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Properties Table View -->
-  <table
-    *ngIf="properties.length > 0"
-    class="properties-table"
-    [class.active]="viewMode === 'table'"
-  >
-    <thead>
-      <tr>
-        <th>Listing</th>
-        <th>Type</th>
-        <th>Location</th>
-        <th>Active Status</th>
-        <th>Approval Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let property of properties; trackBy: trackById">
-        <td>
-          <div style="display: flex; align-items: center; gap: 16px">
-            <div class="table-property-image">
-              <ng-container *ngIf="hasValidImage(property)">
-                <img
-                  [src]="getCoverImageUrl(property)"
-                  [alt]="property.title"
-                  loading="lazy"
-                />
-                <div class="image-placeholder" style="display: none">🏠</div>
-              </ng-container>
-              <ng-container *ngIf="!hasValidImage(property)">
-                <div class="image-placeholder">🏠</div>
-              </ng-container>
+  <div class="table-responsive" *ngIf="pagedProperties.length > 0 && viewMode === 'table'">
+    <table class="properties-table" [class.active]="viewMode === 'table'">
+      <thead>
+        <tr>
+          <th>Listing</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Active Status</th>
+          <th>Approval Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let property of pagedProperties; trackBy: trackById">
+          <td>
+            <div style="display: flex; align-items: center; gap: 16px">
+              <div class="table-property-image">
+                <ng-container *ngIf="hasValidImage(property)">
+                  <img [src]="getCoverImageUrl(property)" [alt]="property.title" loading="lazy" />
+                  <div class="image-placeholder" style="display: none">🏠</div>
+                </ng-container>
+                <ng-container *ngIf="!hasValidImage(property)">
+                  <div class="image-placeholder">🏠</div>
+                </ng-container>
+              </div>
+              <span class="table-property-title">{{ property.title }}</span>
             </div>
-            <span class="table-property-title">{{ property.title }}</span>
-          </div>
-        </td>
-        <td><span class="table-property-type">Home</span></td>
-        <td>
-          <span class="table-property-location"
-            >{{ property.city }}, {{ property.state }},
-            {{ property.country }}</span
-          >
-        </td>
-        <td>
-          <span
-            class="status-badge"
-            [class.active]="property.isActive"
-            [class.inactive]="!property.isActive"
-          >
-            {{ getActiveStatusLabel(property.isActive) }}
-          </span>
-        </td>
-        <td>
-          <span
-            class="approval-status-badge"
-            [class.pending]="property.status === 1"
-            [class.accepted]="property.status === 2"
-            [class.rejected]="property.status === 3"
-          >
-            {{ getStatusLabel(property.status) }}
-          </span>
-        </td>
-        <td>
-          <div class="table-actions">
-            <button
-              class="dark-btn-small edit-btn"
-              (click)="navigateToEditProperty(property.id)"
-              title="Edit Property"
-            >
-              ✏️
-            </button>
-            <button
-              class="dark-btn-small bookings-btn"
-              (click)="navigateToPropertyBookings(property.id)"
-              title="View Bookings"
-            >
-              📅
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+          <td><span class="table-property-type">Home</span></td>
+          <td>
+            <span class="table-property-location">{{ property.city }}, {{ property.state }},
+              {{ property.country }}</span>
+          </td>
+          <td>
+            <span class="status-badge" [class.active]="property.isActive" [class.inactive]="!property.isActive">
+              {{ getActiveStatusLabel(property.isActive) }}
+            </span>
+          </td>
+          <td>
+            <span class="approval-status-badge" [class.pending]="property.status === 1"
+              [class.accepted]="property.status === 2" [class.rejected]="property.status === 3">
+              {{ getStatusLabel(property.status) }}
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button class="dark-btn-small edit-btn" (click)="navigateToEditProperty(property.id)"
+                title="Edit Property">
+                ✏️
+              </button>
+              <button class="dark-btn-small bookings-btn" (click)="navigateToPropertyBookings(property.id)"
+                title="View Bookings">
+                📅
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-container" *ngIf="totalPages > 1" dir="ltr">
+    <nav class="pagination">
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button *ngFor="let page of getVisiblePages()" class="pagination-btn" [class.active]="page === currentPage"
+        [disabled]="page === '...'" (click)="page !== '...' && goToPage(+page)">
+        {{ page }}
+      </button>
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </nav>
+  </div>
 
   <!-- Empty State -->
   <div *ngIf="properties.length === 0" class="empty-state">
@@ -212,4 +178,3 @@
     </button>
   </div>
 </div>
-

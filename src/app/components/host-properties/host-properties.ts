@@ -20,13 +20,19 @@ export class HostProperties implements OnInit {
   error: string | null = null;
   viewMode: 'grid' | 'table' = 'grid';
 
+  // Pagination
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
+  pagedProperties: PropertyDisplayDTO[] = [];
+
   private hostId: string | null = null;
 
   constructor(
     private hostPropertiesService: HostPropertiesService,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.hostId = this.authService.userId;
@@ -47,7 +53,7 @@ export class HostProperties implements OnInit {
     this.hostPropertiesService.getPropertiesByHostId(this.hostId).subscribe({
       next: (properties) => {
         this.properties = properties;
-        console.log(properties)
+        this.updatePagination();
         this.isLoading = false;
       },
       error: (err) => {
@@ -56,6 +62,46 @@ export class HostProperties implements OnInit {
         console.error('Error loading properties:', err);
       },
     });
+  }
+
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.properties.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = Math.max(1, this.totalPages);
+    }
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.pagedProperties = this.properties.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  goToPage(page: number | string): void {
+    if (typeof page === 'number') {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this.updatePagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }
+
+  getVisiblePages(): (number | string)[] {
+    const delta = 2;
+    const range: (number | string)[] = [];
+    const pages: (number | string)[] = [];
+
+    for (let i = Math.max(2, this.currentPage - delta);
+      i <= Math.min(this.totalPages - 1, this.currentPage + delta); i++) {
+      range.push(i);
+    }
+
+    if (this.currentPage - delta > 2) pages.push(1, '...');
+    else pages.push(1);
+
+    pages.push(...range);
+
+    if (this.currentPage + delta < this.totalPages - 1) pages.push('...', this.totalPages);
+    else if (this.totalPages > 1) pages.push(this.totalPages);
+
+    return pages.filter((v, i, a) => i === 0 || v !== a[i - 1]);
   }
 
   refreshProperties(): void {

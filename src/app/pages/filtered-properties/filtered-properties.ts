@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-filtered-properties',
   standalone: true,
-  imports: [CommonModule, SliderCard, RouterModule, WishListModal,TranslateModule],
+  imports: [CommonModule, SliderCard, RouterModule, WishListModal, TranslateModule],
   templateUrl: './filtered-properties.html',
   styleUrls: ['./filtered-properties.css']
 })
@@ -107,7 +107,8 @@ export class FilteredProperties implements OnInit {
   }
 
   private isFirstLoad = true;
-  isLoading = true;
+  isInitialLoading = true;
+  isLoading = false;
   isMapLoading = false;
   properties: Property[] = [];
   selectedProperty: Property | null = null;
@@ -129,6 +130,11 @@ export class FilteredProperties implements OnInit {
   private isUserInteraction = false;
   private isSelectingFromUI = false;
 
+  private lastSearchCenter: L.LatLng | null = null;
+  private lastSearchZoom: number | null = null;
+  private readonly MOVEMENT_THRESHOLD = 500; // 500 meters
+  private readonly ZOOM_THRESHOLD = 0.5; // zoom level change
+
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
@@ -149,6 +155,13 @@ export class FilteredProperties implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      // Only show initial loading shimmers on the very first time we have no data
+      if (this.properties.length === 0 && this.isInitialLoading) {
+        this.isInitialLoading = true;
+      } else {
+        this.isInitialLoading = false;
+      }
+
       const searchParams: SearchParams = {};
 
       if (params['country']) {
@@ -206,36 +219,35 @@ export class FilteredProperties implements OnInit {
 
   loadProperties() {
     this.isLoading = true;
+
     if (!this.isFirstLoad && this.searchParams.country) {
       delete this.searchParams.country;
     }
     this.propertyService.searchProperties(this.searchParams).subscribe({
       next: response => {
-        console.log('🔍 Search Response:', response);
-        console.log('📍 Search Params:', this.searchParams);
-
         if (response.isSuccess) {
           this.isLoading = false;
+          this.isInitialLoading = false;
+          this.isMapLoading = false;
 
-          this.properties = response.data.items;
+          const newItems = response.data.items || [];
 
-          //test
-          // const originalItems = response.data.items;
-          // this.properties = [
-          //   ...originalItems,
-          //   ...originalItems,
-          //   ...originalItems
-          // ];
-
-
-          // this.totalItems = 100;
-          // this.totalPages = 10;
-          // this.currentPage = 1;
-          // this.pageSize = 9;
-          this.totalItems = response.data.metaData.total;
-          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-          this.currentPage = response.data.metaData.page;
-          this.pageSize = response.data.metaData.pageSize;
+          if (newItems.length > 0) {
+            this.properties = newItems;
+            this.totalItems = response.data.metaData.total;
+            this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+            this.currentPage = response.data.metaData.page;
+            this.pageSize = response.data.metaData.pageSize;
+          } else if (this.properties.length === 0) {
+            // Only set to empty if we didn't have anything before
+            this.properties = [];
+            this.totalItems = 0;
+            this.totalPages = 0;
+          } else {
+            // Keep previous properties as requested by the user
+            console.log('📍 No results found in this area, retaining previous properties.');
+            this.showToast('No properties found in this area, showing previous results.', 'bottom', 'center' as any);
+          }
 
           if (!this.map) {
             this.isLoading = false;
@@ -249,7 +261,12 @@ export class FilteredProperties implements OnInit {
           }
         }
       },
-      error: err => console.error('❌ API Error:', err)
+      error: err => {
+        console.error('❌ API Error:', err);
+        this.isLoading = false;
+        this.isInitialLoading = false;
+        this.isMapLoading = false;
+      }
     });
   }
 
@@ -630,7 +647,7 @@ export class FilteredProperties implements OnInit {
 
     this.map.on('moveend', () => {
       if (!this.isSelectingFromUI) {
-        this.isMapLoading = false;
+        // this.isMapLoading = false;
       }
       updateMapInfo();
     });
@@ -645,43 +662,48 @@ export class FilteredProperties implements OnInit {
 
     this.map.on('zoomend', () => {
       if (!this.isSelectingFromUI) {
-        this.isMapLoading = false;
+        // this.isMapLoading = false;
       }
       updateMapInfo();
     });
   }
 
   private async handleMapChange(lat: number, lng: number, zoom: number) {
-    if (this.isSelectingFromUI) {
+    if (this.isSelectingFromUI || !this.map) {
       return;
     }
-    console.log('🔄 Map changed:', {
+
+    const currentCenter = L.latLng(lat, lng);
+
+    // Check if movement is significant
+    if (this.lastSearchCenter) {
+      const distance = currentCenter.distanceTo(this.lastSearchCenter);
+      const zoomDiff = Math.abs(zoom - (this.lastSearchZoom || 0));
+
+      if (distance < this.MOVEMENT_THRESHOLD && zoomDiff < this.ZOOM_THRESHOLD) {
+        console.log('📍 Movement/Zoom below threshold, skipping update', { distance, zoomDiff });
+        this.isMapLoading = false;
+        return;
+      }
+    }
+
+    console.log('🔄 Significant Map change detected:', {
       lat: lat.toFixed(4),
       lng: lng.toFixed(4),
       zoom,
-      // distance: this.calculateDistanceFromZoom(zoom)
-      distance: 100
+      distance: this.lastSearchCenter ? currentCenter.distanceTo(this.lastSearchCenter).toFixed(0) + 'm' : 'initial'
     });
+
+    this.lastSearchCenter = currentCenter;
+    this.lastSearchZoom = zoom;
+    this.isMapLoading = true;
 
     // Update search parameters with new location and distance
     this.searchParams.latitude = lat;
     this.searchParams.longitude = lng;
-    // this.searchParams.maxDistanceKm = this.calculateDistanceFromZoom(zoom);
     this.searchParams.maxDistanceKm = 100;
-    this.searchParams.page = 1; // Reset to first page when location changes
+    this.searchParams.page = 1;
     this.currentPage = 1;
-
-    // Get country from coordinates using reverse geocoding
-    // try {
-    //   const country = await this.getCountryFromCoordinates(lat, lng);
-    //   if (country) {
-    //     this.searchParams.country = country;
-    //     console.log('🌍 Country detected:', country);
-    //   }
-    // } catch (error) {
-    //   console.warn('⚠️ Failed to get country from coordinates:', error);
-    //   // Keep existing country or remove it if coordinates changed significantly
-    // }
 
     // Update URL parameters
     this.updateUrlParams(zoom);
