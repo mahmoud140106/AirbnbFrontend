@@ -624,10 +624,10 @@ body.dLTR {
 
 /* === col-[1-12] (Extra small, default) === */
 .col-1 {
-  width: var(8.333333%);
+  width: var(--col-1);
 }
 .col-2 {
-  width: var(--col-12);
+  width: var(--col-2);
 }
 .col-3 {
   width: var(--col-3);

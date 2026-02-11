@@ -5,7 +5,7 @@ import {
   provideZonelessChangeDetection
 } from '@angular/core';
 import { provideRouter, withHashLocation } from '@angular/router';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi ,withFetch} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import {
   TranslateLoader,
@@ -20,12 +20,12 @@ import { CommonPropInfoService } from './pages/property-info/common-prop-info-se
 
 export const appConfig: ApplicationConfig = {
   providers: [
-      {
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },CommonPropInfoService,
-    provideHttpClient(withInterceptorsFromDi()),
+    }, CommonPropInfoService,
+    provideHttpClient(withInterceptorsFromDi(), withFetch()),
     provideRouter(routes),
     importProvidersFrom(
       TranslateModule.forRoot({
@@ -40,7 +40,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(NgxDaterangepickerMd.forRoot()),
 
     provideZoneChangeDetection(),
-    provideHttpClient(withFetch()),
+
 
     //  importProvidersFrom(GoogleMapsModule)
     // provideZonelessChangeDetection(),
