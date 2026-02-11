@@ -34,7 +34,7 @@ export class AuthService {
     if (rolesJson) {
       const decodedRoles = decodeURIComponent(rolesJson)
       const roles = JSON.parse(decodedRoles);
-      
+
       this.roleSubject.next(roles);
     }
   }
@@ -49,15 +49,19 @@ export class AuthService {
     this.refreshTokenSubject.next(token);
   }
 
-  setUserId(userId: string, expiresAt?:Date) {
-    console.log("login response",userId,expiresAt)
+  setUserId(userId: string, expiresAt?: Date) {
+    console.log("login response", userId, expiresAt)
 
     let currentTime = new Date()
-    this.cookieService.set(this.userIdKey, userId, expiresAt? new Date(expiresAt): currentTime.setMinutes(currentTime.getMinutes()+28), '/');
+    this.cookieService.set(this.userIdKey, userId, expiresAt ? new Date(expiresAt) : currentTime.setMinutes(currentTime.getMinutes() + 28), '/');
     this.userIdSubject.next(userId);
   }
 
   setRole(roles: { name: string }[]) {
+    if (!roles) {
+      this.roleSubject.next([]);
+      return;
+    }
     const names = roles.map((r) => r.name);
     sessionStorage.setItem(this.roleKey, JSON.stringify(names));
     this.cookieService.set(this.roleKey, JSON.stringify(names), 7, '/');

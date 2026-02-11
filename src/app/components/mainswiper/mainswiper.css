@@ -16,7 +16,7 @@
 .title {
   font-size: 22px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0;
 }
 
@@ -29,18 +29,18 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  color: #222;
+  color: var(--primary-text-color);
 }
 
 .nav-btn:hover:not(:disabled) {
-  border-color: #222;
+  border-color: var(--primary-text-color);
   transform: scale(1.04);
 }
 

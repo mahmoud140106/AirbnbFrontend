@@ -107,8 +107,14 @@
   font-weight: 600;
 }
 
-.subtitle, .price, .rating {
+.subtitle {
   font-size: 13px;
+  color: var(--secondary-text-color);
+}
+
+.price, .rating {
+  font-size: 13px;
+  color: var(--primary-text-color);
 }
 
 @media (max-width: 480px) {
