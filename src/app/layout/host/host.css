@@ -23,3 +23,7 @@
     position: fixed !important;
   }
 }
+
+.host-main-content {
+  padding-top: 90px;
+}

@@ -41,7 +41,8 @@
       "WALLET": "Payments"
     },
     "PROFILE": "Profile",
-    "WISHLISTS": "Wishlists"
+    "WISHLISTS": "Wishlists",
+    "DASHBOARD": "Dashboard"
   },
   "login": {
     "welcome": "Welcome back",

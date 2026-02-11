@@ -129,6 +129,7 @@ export class MessagesBoxComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadChatSessions();
     this.setupSignalRHandlers();
+    this.setupMessageReadHandler();
   }
 
   ngOnDestroy(): void {
@@ -159,7 +160,31 @@ export class MessagesBoxComponent implements OnInit, OnDestroy {
 
   openMessage(thread: MessageThread): void {
     this.selectedThreadId = thread.id;
+    if (thread.isUnread) {
+      thread.isUnread = false;
+      thread.unreadCount = 0;
+      this.updateGlobalUnreadCount();
+    }
     this.chatSessionSelected.emit(thread.originalSession);
+  }
+
+  private updateGlobalUnreadCount(): void {
+    const unreadCount = this.messageThreads.filter((t) => t.isUnread).length;
+    this.chatService.updateUnreadCount(unreadCount);
+  }
+
+  private setupMessageReadHandler(): void {
+    this.chatService.messagesRead$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((sessionId) => {
+        const thread = this.messageThreads.find((t) => t.id === sessionId);
+        if (thread && thread.isUnread) {
+          thread.isUnread = false;
+          thread.unreadCount = 0;
+          this.updateGlobalUnreadCount();
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   getFilteredMessages(): MessageThread[] {

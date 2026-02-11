@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1030;
+  z-index: 3000;
   padding-top: 1rem;
   padding-bottom: 1rem;
   transition: all 0.5s ease-in-out;
@@ -83,11 +83,17 @@
   /* left: auto !important; */
   margin-top: 0.5rem;
   transform: translateX(0%) !important;
-  min-width: 200px;
+  min-width: 240px;
   max-width: calc(100vw - 16px);
   /* overflow: hidden; */
   background-color: var(--active);
   min-height: 100px !important;
+  z-index: 10000 !important;
+  pointer-events: none;
+}
+
+.user-menu-dropdown.show {
+  pointer-events: auto;
 }
 
 .menu-dropdown {

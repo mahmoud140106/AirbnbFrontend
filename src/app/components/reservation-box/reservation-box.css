@@ -2,14 +2,14 @@
   width: 100%;
   max-width: 500px;
   height: 87vh;
-  background: white;
-  border: 1px solid #e0e0e0;
-  /* border-radius: 12px; */
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
   overflow: hidden;
   font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   display: flex;
   flex-direction: column;
+  color: var(--primary-text-color);
 }
 
 /* Header - Fixed */
@@ -18,8 +18,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 22.8px 24px;
-  border-bottom: 1px solid #e0e0e0;
-  background: white;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-color);
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -33,12 +33,13 @@
   overflow-x: hidden;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  background: var(--bg-color);
 }
 
 .reservation-title {
   font-size: 22px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0;
 }
 
@@ -46,7 +47,7 @@
   background: none;
   border: none;
   font-size: 24px;
-  color: #717171;
+  color: var(--secondary-text-color);
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -58,7 +59,7 @@
 }
 
 .close-btn:hover {
-  background: #f7f7f7;
+  background: var(--hover-bg);
 }
 
 /* Property Image */
@@ -72,7 +73,6 @@
   width: 100%;
   height: 200px;
   object-fit: cover;
-  /* border-radius: 12px; */
 }
 
 .status-overlay {
@@ -82,15 +82,15 @@
 }
 
 .status-badge {
-  background: rgba(255, 255, 255, 0.95);
-  color: #222;
+  background: var(--active);
+  color: var(--primary-text-color);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 /* Inquiry Section */
@@ -101,12 +101,12 @@
 .inquiry-title {
   font-size: 20px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 12px 0;
 }
 
 .inquiry-message {
-  color: #717171;
+  color: var(--secondary-text-color);
   font-size: 16px;
   line-height: 1.4;
   margin: 0 0 20px 0;
@@ -115,30 +115,30 @@
 .keep-searching-btn {
   width: 100%;
   padding: 14px 24px;
-  background: white;
-  border: 1px solid #222;
+  background: var(--bg-color);
+  border: 1px solid var(--primary-text-color);
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .keep-searching-btn:hover {
-  background: #f7f7f7;
+  background: var(--hover-bg);
 }
 
 /* Trip Details Section */
 .trip-details-section {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
   padding: 24px 24px 0px 24px;
 }
 
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 16px 0;
 }
 
@@ -146,12 +146,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* cursor: pointer; */
   padding: 8px 0;
 }
 
 .property-info:hover {
-  background: #f9f9f9;
+  background: var(--hover-bg);
   border-radius: 8px;
   padding: 8px 12px;
   margin: 0 -12px;
@@ -160,52 +159,49 @@
 .property-name {
   font-size: 16px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 4px 0;
 }
 
 .property-type {
   font-size: 14px;
-  color: #717171;
+  color: var(--secondary-text-color);
   margin: 0;
 }
 
 .chevron-right {
   font-size: 20px;
-  color: #717171;
+  color: var(--secondary-text-color);
 }
 
 /* Property Details Section */
 .property-details-section {
   padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .property-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* cursor: pointer; */
   padding: 8px 12px;
 }
 
 .property-header:hover {
-  background: #f9f9f9;
+  background: var(--hover-bg);
   border-radius: 8px;
-
-  /* margin: 0 -12px; */
 }
 
 .property-info-mini .property-name-mini {
   font-size: 16px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 4px 0;
 }
 
 .property-location {
   font-size: 14px;
-  color: #717171;
+  color: var(--secondary-text-color);
   margin: 0;
 }
 
@@ -215,24 +211,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 4px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .host-info h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 0px 0;
 }
 
 .host-reviews {
   font-size: 14px;
-  color: #717171;
+  color: var(--secondary-text-color);
   margin: 0;
-}
-
-.host-avatar {
-  position: relative;
 }
 
 .avatar-img {
@@ -240,17 +232,7 @@
   height: 40px !important;
   border-radius: 50%;
   object-fit: cover;
-}
-
-.host-badge {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 16px;
-  height: 16px;
-  /* background: #ffd700; */
-  /* border: 2px solid white; */
-  border-radius: 50%;
+  border: 1px solid var(--border-color);
 }
 
 /* Check-in Details */
@@ -263,28 +245,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.detail-row:last-child {
-  border-bottom: none;
-}
-
-.detail-label {
+.detail-label, .detail-value {
   font-size: 16px;
-  color: #222;
-}
-
-.detail-value {
-  font-size: 16px;
-  color: #222;
-  font-weight: 500;
+  color: var(--primary-text-color);
 }
 
 /* Payment Section */
 .payment-section {
   padding: 24px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
 }
 
 .payment-row {
@@ -294,35 +266,26 @@
   margin-bottom: 12px;
 }
 
-.payment-description {
+.payment-description, .payment-amount {
   font-size: 16px;
-  color: #222;
-}
-
-.payment-amount {
-  font-size: 16px;
-  color: #222;
+  color: var(--primary-text-color);
 }
 
 .payment-divider {
   border: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
   margin: 16px 0;
-}
-
-.total-row {
-  margin-bottom: 0;
-  font-weight: 600;
 }
 
 .total-amount {
   font-weight: 600;
   font-size: 18px;
+  color: var(--primary-text-color);
 }
 
 /* Safety Notice */
 .safety-notice {
-  background: #f8f8f8;
+  background: var(--hover-bg);
   padding: 20px 24px;
   margin: 0 24px 20px;
   border-radius: 12px;
@@ -331,94 +294,20 @@
 .safety-title {
   font-size: 16px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0 0 8px 0;
 }
 
-.safety-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
 .safety-text {
-  flex: 1;
   font-size: 14px;
-  color: #717171;
+  color: var(--secondary-text-color);
   line-height: 1.4;
   margin: 0;
 }
 
 .learn-more-link {
-  color: #008489;
+  color: var(--airbnb-red);
   text-decoration: underline;
-}
-
-.learn-more-link:hover {
-  text-decoration: none;
-}
-
-.safety-icon {
-  flex-shrink: 0;
-}
-
-.shield-icon {
-  width: 24px;
-  height: 24px;
-  font-size: 20px;
-}
-
-/* Report Section */
-.report-section {
-  padding: 0 24px 24px;
-}
-
-.report-link {
-  color: #717171;
-  font-size: 14px;
-  text-decoration: underline;
-}
-
-.report-link:hover {
-  color: #222;
-  text-decoration: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .reservation-container {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-  }
-
-  .property-image {
-    height: 160px;
-  }
-
-  .reservation-header,
-  .inquiry-section,
-  .trip-details-section,
-  .payment-section {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .property-image-container {
-    padding: 0 16px;
-  }
-
-  .safety-notice {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
-
-  .booking-header,
-  .host-info,
-  .checkin-details {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 }
 
 /* Loading State */
@@ -428,15 +317,14 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  color: #666;
-  padding: 20px;
+  color: var(--secondary-text-color);
 }
 
 .spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #008489;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--airbnb-red);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 12px;

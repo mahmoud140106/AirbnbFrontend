@@ -3,6 +3,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
 }
 
 .messages-page .row {
@@ -13,12 +15,14 @@
 .scrollable-reservation {
   overflow-y: auto;
   max-height: 100%;
-  background: white;
+  background: var(--active);
   transition: all 0.3s ease-in-out;
+  border-left: 1px solid var(--border-color);
 }
 
 .chat-main-col {
   transition: all 0.3s ease-in-out;
+  background-color: var(--bg-color);
 }
 
 @media (max-width: 767.98px) {
@@ -32,9 +36,10 @@
     right: 0;
     width: 100%;
     z-index: 1050;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    box-shadow: -5px 0 15px var(--shadow-color);
     height: 100%;
     overflow-y: auto;
+    background-color: var(--bg-color);
   }
 
   .back-btn {
@@ -42,7 +47,7 @@
     border: none;
     padding: 8px;
     cursor: pointer;
-    color: #222222;
+    color: var(--primary-text-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,12 +56,13 @@
   }
 
   .back-btn:hover {
-    background-color: #f7f7f7;
+    background-color: var(--hover-bg);
   }
 
   .sticky-top {
     position: sticky;
     top: 0;
     z-index: 10;
+    background-color: var(--bg-color);
   }
 }

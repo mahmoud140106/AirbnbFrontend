@@ -123,32 +123,52 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
           newMessage.chatSessionId === this.selectedChatSession.id
         ) {
           console.log('New message received via SignalR:', newMessage);
-          // this.messages.push(newMessage);
-          let targetLang = this.chatService._targetLang$.getValue()
-          if (targetLang == "" || targetLang == null || targetLang == "null") {
-            this.messages.push(newMessage)
-            this.processChatItems();
-            this.scrollToBottom();
-            this.cdr.detectChanges();
-            return
+
+          // Mark as read if it's an incoming message
+          if (newMessage.senderId !== this.currentUserId) {
+            this.markMessagesAsRead();
+          }
+
+          let targetLang = this.chatService._targetLang$.getValue();
+          if (targetLang == '' || targetLang == null || targetLang == 'null') {
+            const exists = this.messages.some(m => m.id === newMessage.id);
+            if (!exists) {
+              this.messages.push(newMessage);
+              this.processChatItems();
+              this.scrollToBottom();
+              this.cdr.detectChanges();
+            }
+            return;
           }
 
           this.chatService
             .translateMessage(newMessage.messageText, targetLang)
             .subscribe({
               next: (res) => {
-                console.log("Translated  message:", res)
-                newMessage.messageText = res?.translated_texts.length > 0 ? res.translated_texts[0] : ""
-                this.messages.push(newMessage);
-                this.processChatItems();
-                this.scrollToBottom();
-                this.cdr.detectChanges();
+                const exists = this.messages.some(m => m.id === newMessage.id);
+                if (!exists) {
+                  console.log('Translated message:', res);
+                  newMessage.messageText =
+                    res?.translated_texts.length > 0
+                      ? res.translated_texts[0]
+                      : newMessage.messageText;
+                  this.messages.push(newMessage);
+                  this.processChatItems();
+                  this.scrollToBottom();
+                  this.cdr.detectChanges();
+                }
               },
               error: (err) => {
-                console.error("error translating the message", err)
-              }
-            })
-
+                console.error('error translating the message', err);
+                const exists = this.messages.some(m => m.id === newMessage.id);
+                if (!exists) {
+                  this.messages.push(newMessage);
+                  this.processChatItems();
+                  this.scrollToBottom();
+                  this.cdr.detectChanges();
+                }
+              },
+            });
         }
       });
   }
@@ -411,7 +431,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
     if (!this.selectedChatSession) return;
 
     this.chatService
-      .markMessagesAsRead(this.selectedChatSession.id)
+      .markMessagesAsRead(this.selectedChatSession.id, !this.isHost)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -446,7 +466,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
     this.isSending = true;
 
     this.chatService
-      .sendMessage(this.selectedChatSession.id, message, 1, true)
+      .sendMessage(this.selectedChatSession.id, message, 1, !this.isHost)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (sentMessage: MessageDto) => {

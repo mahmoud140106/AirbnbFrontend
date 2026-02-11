@@ -1,56 +1,33 @@
 <div class="d-flex align-items-center position-relative">
   <a *ngIf="isLoggedIn" class="switch-to-hosting-btn" (click)="switchMode()">
     {{
-      currentRoute.includes("/host")
-        ? ("HEADER.SWITCH_TO_TRAVELLER" | translate)
-        : ("HEADER.SWITCH_TO_HOSTING" | translate)
+    currentRoute.includes("/host")
+    ? ("HEADER.SWITCH_TO_TRAVELLER" | translate)
+    : ("HEADER.SWITCH_TO_HOSTING" | translate)
     }}
   </a>
 
   <div class="dropdown" [ngClass]="{ show: dropdownOpen }">
-    <button
-      class="user-menu-button"
-      type="button"
-      id="userMenuButton"
-      (click)="toggleDropdown()"
-      aria-expanded="false"
-    >
+    <button class="user-menu-button" type="button" id="userMenuButton" (click)="toggleDropdown()" aria-expanded="false">
       <svg class="icon-medium icon-menu" viewBox="0 0 24 24" stroke-width="1.5">
         <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
-      <div
-        *ngIf="isLoggedIn"
-        class="icon-user"
-        (click)="$event.stopPropagation()"
-      >
-        <a href="#" routerLink="/profile/{{ userId }}"
-          ><span *ngIf="ifImg === ''" [ngStyle]="{ padding: '4px' }">{{
+      <div *ngIf="isLoggedIn" class="icon-user" (click)="$event.stopPropagation()">
+        <a href="#" routerLink="/profile/{{ userId }}"><span *ngIf="ifImg === ''" [ngStyle]="{ padding: '4px' }">{{
             user.charAt(0).toUpperCase() || "K"
-          }}</span>
-          <img
-            *ngIf="ifImg"
-            [src]="img"
-            alt="user-img"
-            class="user-img"
-            (click)="$event.stopPropagation()"
-            loading="lazy"
-          />
+            }}</span>
+          <img *ngIf="ifImg" [src]="img" alt="user-img" class="user-img" (click)="$event.stopPropagation()"
+            loading="lazy" />
         </a>
       </div>
     </button>
 
-    <ul
-      #dropdownMenu
-      class="dropdown-menu dropdown-menu-end user-menu-dropdown animate__animated"
-      [ngClass]="{
+    <ul #dropdownMenu class="dropdown-menu dropdown-menu-end user-menu-dropdown animate__animated" [ngClass]="{
         animate__fadeIn: dropdownOpen,
         animate__fadeOut: dropdownClosing,
         show: dropdownOpen || dropdownClosing
-      }"
-      [style.right]="lang.currentLang === 'en' ? '0' : 'auto'"
-      [style.left]="lang.currentLang === 'ar' ? '0' : 'auto'"
-      (animationend)="onAnimationEnd()"
-    >
+      }" [style.right]="lang.currentLang === 'en' ? '0' : 'auto'"
+      [style.left]="lang.currentLang === 'ar' ? '0' : 'auto'" (animationend)="onAnimationEnd()">
       <!-- <li class="d-lg-none" *ngIf="currentRoute.includes('/host')">
         <a
           class="dropdown-item d-flex align-items-center gap-2"
@@ -60,19 +37,13 @@
         </a>
       </li> -->
       <li class="d-lg-none" *ngIf="currentRoute.includes('/host')">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          routerLink="/hostsettings/availability"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/hostsettings/availability">
           <i class="bi bi-calendar3"></i>
           {{ "HEADER.NAV.CALENDAR" | translate }}
         </a>
       </li>
       <li class="d-lg-none" *ngIf="currentRoute.includes('/host')">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          routerLink="/host"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/host">
           <i class="bi bi-house-door"></i>
           {{ "HEADER.NAV.LISTINGS" | translate }}
         </a>
@@ -87,32 +58,27 @@
         </a>
       </li> -->
       <li class="d-lg-none" *ngIf="currentRoute.includes('/host')">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          routerLink="/hostsettings/Wallet"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/hostsettings/Wallet">
           <i class="bi bi-wallet2"></i>
           {{ "HEADER.NAV.WALLET" | translate }}
         </a>
       </li>
 
+      <li *ngIf="isLoggedIn && isAdmin">
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/AdminDashboard">
+          <i class="bi bi-speedometer2"></i>
+          {{ "HEADER.DASHBOARD" | translate }}
+        </a>
+      </li>
       <li *ngIf="isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="#"
-          routerLink="/notifications"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="#" routerLink="/notifications">
           <div class="position-relative">
             <i class="bi bi-bell"></i>
-            <span
-              *ngIf="unreadCountNotifications > 0"
-              class="position-absolute badge rounded-pill span-bg-n"
-              [ngStyle]="{
+            <span *ngIf="unreadCountNotifications > 0" class="position-absolute badge rounded-pill span-bg-n" [ngStyle]="{
                 top: '-9px',
                 right: lang.currentLang === 'en' ? '5px' : null,
                 left: lang.currentLang === 'ar' ? '5px' : null
-              }"
-            >
+              }">
               {{ unreadCountNotifications }}
               <span class="visually-hidden">unread notifications </span>
             </span>
@@ -121,11 +87,7 @@
         </a>
       </li>
       <li *ngIf="isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="#"
-          routerLink="/profile/{{ userId }}"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="#" routerLink="/profile/{{ userId }}">
           <i class="bi bi-person-fill"></i>
           {{ "HEADER.PROFILE" | translate }}
         </a>
@@ -140,18 +102,10 @@
         </a>
       </li> -->
       <li *ngIf="isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          routerLink="/WishLists"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/WishLists">
           <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 32 32"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-              style="
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+              focusable="false" style="
                 display: block;
                 fill: black;
                 height: 20px;
@@ -159,32 +113,24 @@
                 stroke: black;
                 stroke-width: 1;
                 overflow: visible;
-              "
-            >
+              ">
               <path
-                d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"
-              ></path>
+                d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z">
+              </path>
             </svg>
           </div>
           {{ "HEADER.WISHLISTS" | translate }}
         </a>
       </li>
       <li *ngIf="isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="Messages"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="Messages">
           <div class="position-relative">
             <i class="bi bi-chat"></i>
-            <span
-              *ngIf="unreadCount > 0"
-              class="position-absolute badge rounded-pill span-bg-n"
-              [ngStyle]="{
+            <span *ngIf="unreadCount > 0" class="position-absolute badge rounded-pill span-bg-n" [ngStyle]="{
                 top: '-7px',
                 left: lang.currentLang === 'en' ? '-7px' : null,
                 right: lang.currentLang === 'ar' ? '-7px' : null
-              }"
-            >
+              }">
               {{ unreadCount }}
               <span class="visually-hidden">unread messages</span>
             </span>
@@ -197,51 +143,30 @@
         <hr class="dropdown-divider" />
       </li>
 
-      <li
-        class="dropdown-item d-flex align-items-center gap-2"
-        style="cursor: pointer"
-        (click)="toggleTheme()"
-      >
+      <li class="dropdown-item d-flex align-items-center gap-2" style="cursor: pointer" (click)="toggleTheme()">
         <i class="bi" [ngClass]="isDarkMode ? 'bi-sun' : 'bi-moon'"></i>
         {{
-          isDarkMode
-            ? ("HEADER.LIGHT_MODE" | translate)
-            : ("HEADER.DARK_MODE" | translate)
+        isDarkMode
+        ? ("HEADER.LIGHT_MODE" | translate)
+        : ("HEADER.DARK_MODE" | translate)
         }}
       </li>
 
-      <li
-        class="dropdown-item d-flex align-items-center gap-2 dropdown-center"
-        style="padding: 0px !important"
-      >
+      <li class="dropdown-item d-flex align-items-center gap-2 dropdown-center" style="padding: 0px !important">
         <!-- Dropstart Language Switcher -->
-        <div
-          type="button"
-          class="dropdown-toggle dropdown-item d-flex align-items-center gap-2 menu-dropdown"
-          data-bs-toggle="dropdown"
-        >
+        <div type="button" class="dropdown-toggle dropdown-item d-flex align-items-center gap-2 menu-dropdown"
+          data-bs-toggle="dropdown">
           <i class="bi bi-globe"></i>
           {{ "HEADER.LANGUAGE" | translate }}
         </div>
-        <ul
-          class="dropdown-menu"
-          style="left: 10px; background-color: var(--active)"
-        >
+        <ul class="dropdown-menu" style="left: 10px; background-color: var(--active)">
           <li>
-            <button
-              class="dropdown-item"
-              [class.active]="lang.currentLang === 'en'"
-              (click)="lang.switchLang('en')"
-            >
+            <button class="dropdown-item" [class.active]="lang.currentLang === 'en'" (click)="lang.switchLang('en')">
               {{ "HEADER.ENGLISH" | translate }}
             </button>
           </li>
           <li>
-            <button
-              class="dropdown-item"
-              [class.active]="lang.currentLang === 'ar'"
-              (click)="lang.switchLang('ar')"
-            >
+            <button class="dropdown-item" [class.active]="lang.currentLang === 'ar'" (click)="lang.switchLang('ar')">
               {{ "HEADER.ARABIC" | translate }}
             </button>
           </li>
@@ -268,32 +193,20 @@
       </li> -->
 
       <li *ngIf="!isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="#"
-          (click)="openRegisterDialog()"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="#" (click)="openRegisterDialog()">
           <i class="bi bi-person-plus"></i>
           {{ "HEADER.SIGN_UP" | translate }}
         </a>
       </li>
 
       <li *ngIf="!isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="#"
-          (click)="openLoginDialog()"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="#" (click)="openLoginDialog()">
           <i class="bi bi-box-arrow-in-right"></i>
           {{ "HEADER.LOGIN" | translate }}
         </a>
       </li>
       <li *ngIf="isLoggedIn">
-        <a
-          class="dropdown-item d-flex align-items-center gap-2"
-          href="#"
-          (click)="logout()"
-        >
+        <a class="dropdown-item d-flex align-items-center gap-2" href="#" (click)="logout()">
           <i class="bi bi-box-arrow-right"></i>
           {{ "HEADER.LOGOUT" | translate }}
         </a>

@@ -48,21 +48,22 @@ export class PropertySwiperComponent implements OnInit, AfterViewInit {
 
   breakpoints: any = {};
   @Input() properties: Property[] = [];
+  @Input() isFirstSwiper: boolean = false;
 
   ngAfterViewInit(): void {
     const swiperEl = this.swiperEl?.nativeElement;
 
     const swiperParams = {
       slidesPerView: 1.2, // Mobile default
-      spaceBetween: 16,
+      spaceBetween: 12,
       grabCursor: true,
       breakpoints: {
-        320: { slidesPerView: 1.2, spaceBetween: 12 },
-        480: { slidesPerView: 1.5, spaceBetween: 12 },
-        640: { slidesPerView: 2.2, spaceBetween: 16 },
+        320: { slidesPerView: 1.8, spaceBetween: 8 },
+        480: { slidesPerView: 2.2, spaceBetween: 10 },
+        640: { slidesPerView: 2.5, spaceBetween: 12 },
         768: { slidesPerView: 3, spaceBetween: 16 },
         1024: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
-        1280: { slidesPerView: this.slidesPerView, spaceBetween: 16 },
+        1280: { slidesPerView: this.slidesPerView, spaceBetween: 20 },
       },
       on: {
         init: () => {

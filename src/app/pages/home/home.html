@@ -103,15 +103,8 @@
 
 <app-chat-bot></app-chat-bot>
 
-<app-wish-list-modal
-  *ngIf="show"
-  [propertyId]="selectedPropertyId"
-  (close)="onClose()"
-  (finish)="onFinish($event)"
-  [show]="show"
-  [userId]="authService.userId ?? undefined"
-  class="col-12"
->
+<app-wish-list-modal *ngIf="show" [propertyId]="selectedPropertyId" (close)="onClose()" (finish)="onFinish($event)"
+  [show]="show" [userId]="authService.userId ?? undefined" class="col-12">
 </app-wish-list-modal>
 
 <!-- <app-property-swiper
@@ -121,13 +114,8 @@
   [properties]="properties"
 ></app-property-swiper> -->
 
-<div *ngFor="let section of sectionProperties">
-  <app-property-swiper
-    [title]="section.title"
-    [slidesPerView]="section.slidesPerView"
-    [isLoading]="section.isLoading"
-    [properties]="section.properties"
-    (propertyClicked)="onPropertyClick($event)"
-    (wishlistIconClick)="onWishlistClick($event)"
-  ></app-property-swiper>
+<div *ngFor="let section of sectionProperties; let i = index">
+  <app-property-swiper [title]="section.title" [slidesPerView]="section.slidesPerView" [isLoading]="section.isLoading"
+    [properties]="section.properties" [isFirstSwiper]="i === 0" (propertyClicked)="onPropertyClick($event)"
+    (wishlistIconClick)="onWishlistClick($event)"></app-property-swiper>
 </div>

@@ -148,7 +148,7 @@ export const nllb_languages: { [key: string]: string } = {
   "Yoruba": "yor_Latn",
   "Zulu": "zul_Latn"
 };
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Property } from '../../models/Property';
 
@@ -313,13 +313,16 @@ export class ChatService {
   private messageCache = new Map<string, MessageDto[]>();
   private readonly CACHE_EXPIRY = 10 * 60 * 1000; // 5 minutes
 
-  public _targetLang$  = new BehaviorSubject<string>("")
-  public targetLang$  = this._targetLang$.asObservable()
-  
+  public _targetLang$ = new BehaviorSubject<string>("")
+  public targetLang$ = this._targetLang$.asObservable()
+
   constructor(private http: HttpClient) { }
 
   private unreadCountSubject = new BehaviorSubject<number>(0);
   public unreadCount$ = this.unreadCountSubject.asObservable();
+
+  private messagesReadSubject = new Subject<string>();
+  public messagesRead$ = this.messagesReadSubject.asObservable();
 
   public updateUnreadCount(count: number): void {
     this.unreadCountSubject.next(count);
@@ -383,9 +386,15 @@ export class ChatService {
   }
 
   // Mark messages as read in a chat session
-  markMessagesAsRead(chatSessionId: string): Observable<{ message: string }> {
+  markMessagesAsRead(chatSessionId: string, isUser: boolean = true): Observable<{ message: string }> {
+    const params = new HttpParams().set('isUser', isUser.toString());
     return this.http
-      .post<{ message: string }>(`${this.baseUrl}/sessions/${chatSessionId}/mark-read`, {});
+      .post<{ message: string }>(`${this.baseUrl}/sessions/${chatSessionId}/mark-read`, {}, { params })
+      .pipe(
+        tap(() => {
+          this.messagesReadSubject.next(chatSessionId);
+        })
+      );
   }
 
   // Reserve a property (creates chat session and reservation request)
@@ -423,10 +432,10 @@ export class ChatService {
     if (languageName == "null" || languageName == null || languageName == undefined || lang == null || lang == "") {
       targetLang = "";
       localStorage.setItem('chatLanguage', "");
-      console.log("languageName",targetLang)
+      console.log("languageName", targetLang)
       this._targetLang$.next("")
     }
-    else if (nllb_languages[languageName] ) {
+    else if (nllb_languages[languageName]) {
       targetLang = languageName;
       this._targetLang$.next(languageName)
       localStorage.setItem('chatLanguage', languageName);
@@ -435,13 +444,13 @@ export class ChatService {
     }
   }
 
-  translateMessage(text:string, targetLang:string){
+  translateMessage(text: string, targetLang: string) {
     targetLang = nllb_languages[targetLang]
-    console.log("translating to ",targetLang)
+    console.log("translating to ", targetLang)
     return this.http
-                .post<{translated_texts:string[]}>(
-                                                  "https://ahmedaladl-transliation.hf.space/translate",
-                                                  {texts:[text], tgt_lang:targetLang}
-                                                )
+      .post<{ translated_texts: string[] }>(
+        "https://ahmedaladl-transliation.hf.space/translate",
+        { texts: [text], tgt_lang: targetLang }
+      )
   }
 }

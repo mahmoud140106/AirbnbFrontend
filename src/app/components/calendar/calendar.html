@@ -26,6 +26,9 @@
           </svg>
         </button>
 
+        @if (showPropertyDropdown) {
+        <div class="modal-backdrop-mobile" (click)="closeProperty()"></div>
+        }
         <div class="view-dropdown-2" [class.show]="showPropertyDropdown">
           <div class="dropdown-content">
             <label *ngFor="let property of properties" class="radio-option justify-content-between">
@@ -58,6 +61,9 @@
           </svg>
         </button>
         <!-- View Type Dropdown -->
+        @if (showViewDropdown) {
+        <div class="modal-backdrop-mobile" (click)="closeViewDropdown()"></div>
+        }
         <div class="view-dropdown" [class.show]="showViewDropdown">
           <div class="dropdown-content">
             <label class="radio-option">

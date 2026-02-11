@@ -3,7 +3,7 @@
   padding: 0 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 
 .header {
@@ -69,7 +69,15 @@ swiper-slide {
   height: auto;
 }
 
+.first-swiper {
+  margin-top: 2rem;
+}
+
 @media (max-width: 768px) {
+  .first-swiper {
+    margin-top: 1rem;
+  }
+
   .properties-container {
     padding: 0 16px;
   }
@@ -92,7 +100,7 @@ swiper-slide {
   }
   
   swiper-slide {
-    width: auto !important;
+    height: auto;
   }
 }
 

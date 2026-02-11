@@ -1,6 +1,8 @@
 <div [ngClass]="{'noscroll':noScrollRoute}">
 
-<app-hostheader></app-hostheader>
-<router-outlet></router-outlet>
+    <app-hostheader></app-hostheader>
+    <main class="host-main-content">
+        <router-outlet></router-outlet>
+    </main>
 
 </div>

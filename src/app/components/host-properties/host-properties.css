@@ -5,18 +5,20 @@
 
 :root {
   --card-radius: 16px;
-  --subtle-border: #ebebeb;
-  --accent-red: #ff385c;
-  --glass-bg: rgba(255, 255, 255, 0.85);
+  --subtle-border: var(--border-color);
+  --accent-red: var(--airbnb-red);
+  --glass-bg: var(--bg);
   --glass-blur: blur(8px);
 }
 
 .host-properties-container {
   max-width: 1440px;
-  margin: 0 auto;
+  margin: 60px auto;
   padding: 24px 40px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
 }
 
 /* Loading/Error States - Standardizing Styles */
@@ -28,6 +30,7 @@
   min-height: 400px;
   padding: 40px;
   text-align: center;
+  color: var(--primary-text-color);
 }
 
 .loading-spinner {
@@ -58,6 +61,7 @@
   font-weight: 700;
   letter-spacing: -0.5px;
   margin: 0;
+  color: var(--primary-text-color);
 }
 
 .header-controls {
@@ -70,8 +74,9 @@
 .view-toggle-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--subtle-border);
-  background: white;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--primary-text-color);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -82,15 +87,15 @@
 }
 
 .view-toggle-btn:hover {
-  background: #f7f7f7;
-  border-color: #222;
+  background: var(--hover-bg);
+  border-color: var(--primary-text-color);
 }
 
 .add-listing-btn {
   width: 40px;
   height: 40px;
-  background: #222;
-  color: white;
+  background: var(--primary-text-color);
+  color: var(--bg-color);
   border: none;
   border-radius: 50%;
   font-size: 24px;
@@ -102,7 +107,7 @@
 }
 
 .add-listing-btn:hover {
-  background: #000;
+  opacity: 0.9;
   transform: scale(1.05);
 }
 
@@ -116,16 +121,16 @@
 
 .property-card {
   position: relative;
-  border: 1px solid var(--subtle-border);
+  border: 1px solid var(--border-color);
   border-radius: var(--card-radius);
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-  background: white;
+  background: var(--active);
 }
 
 .property-card:hover {
   transform: translateY(-4px);
-  border-color: #d0d0d0;
+  border-color: var(--secondary-text-color);
 }
 
 .property-image-container {
@@ -222,7 +227,7 @@
 .property-title {
   font-size: 18px;
   font-weight: 600;
-  color: #222;
+  color: var(--primary-text-color);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -231,7 +236,7 @@
 
 .property-location {
   font-size: 14px;
-  color: #717171;
+  color: var(--secondary-text-color);
   margin: 0;
 }
 
@@ -254,20 +259,20 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: #f7f7f7;
-  border: 1px solid #f7f7f7;
-  color: #222;
+  background: var(--hover-bg);
+  border: 1px solid var(--border-color);
+  color: var(--primary-text-color);
 }
 
 .action-btn.edit:hover {
-  background: white;
-  border-color: #222;
+  background: var(--bg-color);
+  border-color: var(--primary-text-color);
 }
 
 .action-btn.bookings:hover {
-  background: #222;
-  color: white;
-  border-color: #222;
+  background: var(--primary-text-color);
+  color: var(--bg-color);
+  border-color: var(--primary-text-color);
 }
 
 /* Pagination - Unified Look */
@@ -289,9 +294,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--subtle-border);
-  background: white;
-  color: #222;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--primary-text-color);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -300,14 +305,14 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  border-color: #222;
-  background: #f7f7f7;
+  border-color: var(--primary-text-color);
+  background: var(--hover-bg);
 }
 
 .pagination-btn.active {
-  background: #222;
-  color: white;
-  border-color: #222;
+  background: var(--primary-text-color);
+  color: var(--bg-color);
+  border-color: var(--primary-text-color);
 }
 
 .pagination-btn:disabled {
@@ -319,9 +324,9 @@
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid var(--subtle-border);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  background: white;
+  background: var(--active);
   margin-bottom: 40px;
 }
 
@@ -334,18 +339,19 @@
 .properties-table th {
   text-align: left;
   padding: 16px 24px;
-  background: #f7f7f7;
+  background: var(--hover-bg);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #717171;
-  border-bottom: 1px solid var(--subtle-border);
+  color: var(--secondary-text-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .properties-table td {
   padding: 16px 24px;
-  border-bottom: 1px solid var(--subtle-border);
+  border-bottom: 1px solid var(--border-color);
   vertical-align: middle;
+  color: var(--primary-text-color);
 }
 
 .table-property-image {
@@ -359,6 +365,40 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Table actions specialized buttons */
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dark-btn-small {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.dark-btn-small:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-text-color);
+}
+
+.edit-btn:hover {
+  color: var(--airbnb-red);
+}
+
+.bookings-btn:hover {
+  color: #10b981;
 }
 
 /* Responsive tweaks */

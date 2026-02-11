@@ -1,14 +1,9 @@
 .wallet-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto 0;
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /* background-color: #f8f9fa; */
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 85vh; */
+  color: var(--primary-text-color);
 }
 
 /* Loading State */
@@ -23,7 +18,7 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #e3e3e3;
+  border: 4px solid var(--border-color);
   border-top: 4px solid var(--airbnb-red);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -50,12 +45,12 @@
 .error-message {
   display: flex;
   align-items: center;
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
   padding: 15px 20px;
   border-radius: 8px;
   margin-bottom: 20px;
-  border: 1px solid #f5c6cb;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .error-icon {
@@ -87,14 +82,10 @@
 
 /* Payments Section */
 .payments-section {
-  background: white;
+  background: var(--active);
   border-radius: 12px;
   padding: 25px;
-  /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  -ms-border-radius: 12px;
-  -o-border-radius: 12px;
+  border: 1px solid var(--border-color);
 }
 
 .section-header {
@@ -107,7 +98,7 @@
 .section-header h2 {
   font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: var(--primary-text-color);
   margin: 0;
 }
 
@@ -122,18 +113,8 @@
   border: none;
   padding: 10px 20px;
   border-radius: 30px;
-  /*cursor: pointer;
-  */
   font-size: 14px;
   font-weight: 500;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
-}
-
-.tab-btn.active {
-  /* background: var(--airbnb-red); */
 }
 
 /* Tables */
@@ -147,7 +128,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 15px;
   padding: 15px 0;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-color);
   margin-bottom: 10px;
 }
 
@@ -158,7 +139,7 @@
 .header-col {
   font-size: 12px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--secondary-text-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -168,7 +149,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 15px;
   padding: 15px 0;
-  border-bottom: 1px solid #e3eeee;
+  border-bottom: 1px solid var(--border-color);
   align-items: center;
 }
 
@@ -178,7 +159,7 @@
 
 .col {
   font-size: 14px;
-  color: #374151;
+  color: var(--primary-text-color);
 }
 
 .status-badge {
@@ -190,13 +171,13 @@
 }
 
 .status-badge.pending {
-  background-color: #fef3c7;
-  color: #92400e;
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
 }
 
 .status-badge.released {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
 }
 
 .show-more {
@@ -207,7 +188,7 @@
 .show-more-btn {
   background: none;
   color: var(--airbnb-red);
-  border: 1px solid var(--airbnb-dark-red);
+  border: 1px solid var(--airbnb-red);
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -216,7 +197,7 @@
 }
 
 .show-more-btn:hover {
-  background: var(--airbnb-dark-red);
+  background: var(--airbnb-red);
   color: white;
 }
 
@@ -284,13 +265,10 @@
 
 /* Balance Section */
 .balance-section {
-  /* background: white; */
   border-radius: 12px;
   padding: 25px;
-  background-color: #f8f9fa;
-  border: 1px solid #eee;
-
-  /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
+  background-color: var(--hover-bg);
+  border: 1px solid var(--border-color);
 }
 
 .balance-header {
@@ -303,7 +281,7 @@
 .balance-transactions h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--primary-text-color);
   margin: 0 0 20px 0;
 }
 
@@ -326,8 +304,8 @@
 }
 
 .withdraw-btn {
-  background: #e5e7eb;
-  color: #9ca3af;
+  background: var(--disabled-bg);
+  color: var(--disabled-color);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -340,7 +318,7 @@
 .no-transactions {
   text-align: center;
   padding: 40px 20px;
-  color: #6b7280;
+  color: var(--secondary-text-color);
   font-size: 16px;
 }
 

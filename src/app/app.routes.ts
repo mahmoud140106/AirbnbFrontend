@@ -122,24 +122,15 @@ export const routes: Routes = [
   },
   { path: 'take-info/:id', component: UpdateProfile, canActivate: [authGuard] },
   { path: 'host', component: HostProperties, canActivate: [authGuard] },
-  
+
   { path: 'contact-host/:propertyId', component: ContactHostComponent },
-  
+
   {
     path: 'propertybookings/:propertyId',
     component: PropertyBookings,
     canActivate: [authGuard],
   },
   { path: 'review/:id', component: ReviewForm, canActivate: [authGuard] },
-
-  {
-    path: 'AdminDashboard',
-    component: AdminDashboard,
-    canActivate: [authGuard, RoleGuard],
-    data: {
-      roles: ['Admin'],
-    },
-  },
 
   {
     path: 'AdminDashboard',

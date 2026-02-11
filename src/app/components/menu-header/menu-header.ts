@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -41,6 +42,7 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
   dialogService = inject(DialogService);
   authService = inject(AuthService);
   handleImgService = inject(HandleImgService);
+  cd = inject(ChangeDetectorRef);
 
   constructor(
     public lang: LangService,
@@ -58,8 +60,10 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
       .subscribe((event: NavigationEnd) => {
         this.currentRoute = event.urlAfterRedirects;
         this.checkIfMessagesRoute();
+        this.closeDropdown();
       });
 
+    this.currentRoute = this.router.url;
     this.chatService.unreadCount$
       .pipe(takeUntil(this.destroy$))
       .subscribe((count) => {
@@ -70,10 +74,9 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
   ngOnInit() {
     this.isDarkMode = document.body.classList.contains('dark');
     this.checkIfMessagesRoute();
-    this.isLoggedIn = !!this.userId;
 
     (window as any).Logging = () => {
-      this.isLoggedIn = !!this.userId;
+      this.cd.detectChanges();
     };
   }
 
@@ -111,7 +114,13 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
     return this.handleImgService.handleImage(this.ifImg);
   }
 
-  isLoggedIn = false;
+  get isAdmin(): boolean {
+    return this.authService.role.includes('Admin');
+  }
+
+  get isLoggedIn(): boolean {
+    return !!this.userId;
+  }
 
   switchMode() {
     this.router.navigate([this.currentRoute.includes('/host') ? '/' : '/host']);
@@ -144,14 +153,12 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
   }
 
   logout() {
-    // this.authService.clear();
     this.userService.Logout().subscribe({
       next: (res) => {
-        this.isLoggedIn = false;
         localStorage.removeItem('unReadCount');
         this.router.navigate(['/']);
       },
-      error: (err) => {},
+      error: (err) => { },
     });
   }
 
@@ -179,8 +186,11 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
   }
 
   toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
-    this.dropdownClosing = !this.dropdownOpen;
+    if (this.dropdownOpen) {
+      this.closeDropdown();
+    } else {
+      this.openDropdown();
+    }
   }
 
   openDropdown() {
@@ -189,8 +199,17 @@ export class MenuHeader implements AfterViewInit, OnInit, OnDestroy {
   }
 
   closeDropdown() {
+    if (!this.dropdownOpen) return;
     this.dropdownClosing = true;
     this.dropdownOpen = false;
+
+    // Safety timeout in case animationend doesn't fire
+    setTimeout(() => {
+      if (this.dropdownClosing) {
+        this.dropdownClosing = false;
+        this.cd.markForCheck();
+      }
+    }, 500);
   }
 
   onAnimationEnd() {

@@ -1,6 +1,6 @@
-<div class="properties-container container">
+<div class="properties-container container" [class.first-swiper]="isFirstSwiper">
   <!-- Header -->
-  <div class="header mt-16">
+  <div class="header">
     <h2 class="title">{{ title }}</h2>
     <div class="navigation-arrows" dir="ltr">
       <button class="nav-btn prev-btn" (click)="slidePrev()" [disabled]="isBeginning">
