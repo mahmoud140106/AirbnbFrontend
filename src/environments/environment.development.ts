@@ -4,5 +4,5 @@ export const environment = {
   baseUrl: 'https://itiairbnb.runasp.net/api',
   base: "https://itiairbnb.runasp.net",
   domainBaseUrl: "http://localhost:4200",
-  production: false
+  production: true
 };
